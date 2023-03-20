@@ -1,47 +1,50 @@
-let cx, cy;
+let cx, cy, dx, dy;
 let secondsRadius;
 let minutesRadius;
 let hoursRadius;
 let clockDiameter;
 
 function setup() {
+  //création zone dessin sur toute la page
   createCanvas(windowWidth, windowHeight);
   stroke(255);
 
   let radius = min(200, 200) / 2;
+
+  //proportionalité de l'horloge si changement de taille
   secondsRadius = radius * 0.71;
   minutesRadius = radius * 0.6;
   hoursRadius = radius * 0.5;
   clockDiameter = radius * 1.7;
 
-  cx = width-150
-  cy = 150;
 
+  //coordonnés de l'horloge a aiguille
+  cx = width - 150
+  cy = 150;
+  // heure digitale
   dx = width - 230
   dy = 300
-  
+
 }
 
 function draw() {
-  background(0,75,120);
+  background(255);
   drawClock()
   drawDigitalClock()
 }
 
-function windowResized(){
-  resizeCanvas(windowWidth,windowHeight)
+// A voir!
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight)
 }
 
-function drawDigitalClock(){
-  let heure = hour()
-  let min = minute()
-  let sec = second()
+function drawDigitalClock() {
   textSize(40)
-  text(heure + ":"+min+":"+sec,dx,dy)
+  text(hour() + ":" + minute() + ":" + second(), dx, dy)
 }
 
-function drawClock(){
-  
+function drawClock() {
+
   // Draw the clock background
   noStroke();
   fill(244, 122, 158);
