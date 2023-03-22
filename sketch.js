@@ -3,11 +3,8 @@ let secondsRadius;
 let minutesRadius;
 let hoursRadius;
 let clockDiameter;
-
-// A voir!
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight)
-}
+let imgTram;
+let xImgTram = 0
 
 function drawDigitalClock() {
   textSize(40)
@@ -15,7 +12,6 @@ function drawDigitalClock() {
 }
 
 function drawClock() {
-
   // Draw the clock background
   noStroke();
   fill(244, 122, 158);
@@ -57,10 +53,9 @@ async function reseauTan() {
   let direction1 = tram[0].terminus
   let passage2 = tram[1].temps
   let direction2 = tram[1].terminus
-  console.log(response)
   console.log(tram)
-  //console.log(passage1 + " vers " + direction1)
-  //console.log(passage2 + " vers " + direction2)
+  console.log(passage1 + " vers " + direction1)
+  console.log(passage2 + " vers " + direction2)
   setTimeout(reseauTan, 10000)
 }
 
@@ -77,6 +72,22 @@ const changePokemon = async () => {
   console.log(dataOK)
   console.log("coucou")
   document.getElementById("poke").innerHTML = "<img src= \" " + image + "\" >"
+}
+
+async function drawTram() {
+  let yImgTram = 600
+  xImgTram += 7
+  if (xImgTram > 1000) {
+    xImgTram = 1000
+  }
+  //Arret de tram bas de page
+  stroke(0, 0, 0)
+  strokeWeight(10)
+  fill(0, 200, 0)
+  rect(900, yImgTram - 90, 350, 175, 20)
+  //Affichage tram en mouvement
+  image(imgTram, xImgTram, yImgTram, imgTram.width / 2, imgTram.height / 2)
+
 }
 
 function setup() {
@@ -100,6 +111,15 @@ function setup() {
   dx = width - 230
   dy = 300
 
+  //création images
+  imgTram = loadImage('./Img/tram.png')
 }
+
+function draw() {
+  background(255);
+  drawClock()
+  drawDigitalClock()
+  drawTram()
 }
-calcul()
+
+reseauTan()
