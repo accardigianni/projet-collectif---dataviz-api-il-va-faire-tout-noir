@@ -3,11 +3,8 @@ let secondsRadius;
 let minutesRadius;
 let hoursRadius;
 let clockDiameter;
-
-// A voir!
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight)
-}
+let imgTram;
+let xImgTram = 0
 
 function drawDigitalClock() {
   textSize(40)
@@ -15,7 +12,6 @@ function drawDigitalClock() {
 }
 
 function drawClock() {
-
   // Draw the clock background
   noStroke();
   fill(244, 122, 158);
@@ -50,14 +46,6 @@ function drawClock() {
   endShape();
 }
 
-async function fetchPokemon() {
-  const response = await fetch('https://pokeapi.co/api/v2/pokemon/charmander')
-  const pokemon = await response.json()
-  let sprites = pokemon.sprites.other.dream_world.front_default
-  console.log(pokemon)
-  document.getElementById("pokemon").innerHTML = "<img src = \" " + sprites + "\">"
-}
-
 async function reseauTan() {
   const response = await fetch('https://open.tan.fr/ewp/tempsattente.json/MOUT')
   const tram = await response.json()
@@ -86,6 +74,22 @@ const changePokemon = async () => {
   document.getElementById("poke").innerHTML = "<img src= \" " + image + "\" >"
 }
 
+async function drawTram() {
+  let yImgTram = 600
+  xImgTram += 7
+  if (xImgTram > 1000) {
+    xImgTram = 1000
+  }
+  //Arret de tram bas de page
+  stroke(0, 0, 0)
+  strokeWeight(10)
+  fill(0, 200, 0)
+  rect(900, yImgTram - 90, 350, 175, 20)
+  //Affichage tram en mouvement
+  image(imgTram, xImgTram, yImgTram, imgTram.width / 2, imgTram.height / 2)
+
+}
+
 function setup() {
   //création zone dessin sur toute la page
   createCanvas(windowWidth, windowHeight);
@@ -107,13 +111,15 @@ function setup() {
   dx = width - 230
   dy = 300
 
+  //création images
+  imgTram = loadImage('./Img/tram.png')
 }
 
 function draw() {
   background(255);
   drawClock()
   drawDigitalClock()
-  // image("projet-collectif---dataviz-api-il-va-faire-tout-noir/Img/horloge vierge.png", 0, 0)
+  drawTram()
 }
 
 reseauTan()
