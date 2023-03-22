@@ -90,6 +90,15 @@ async function drawTram() {
 
 }
 
+function drawTitle() {
+  textSize(40)
+  textFont('Helvetica');
+  noStroke()
+  text("Ada Tech School", 70, 70)
+  textSize(30)
+  text("Time to get away !", 70, 110)
+}
+
 function setup() {
   //création zone dessin sur toute la page
   createCanvas(windowWidth, windowHeight);
@@ -120,6 +129,7 @@ function draw() {
   drawClock()
   drawDigitalClock()
   drawTram()
+  drawTitle()
 }
 
 reseauTan()
