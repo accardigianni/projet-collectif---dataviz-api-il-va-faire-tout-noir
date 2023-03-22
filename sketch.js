@@ -74,20 +74,30 @@ const changePokemon = async () => {
   document.getElementById("poke").innerHTML = "<img src= \" " + image + "\" >"
 }
 
-async function drawTram() {
+function drawTram() {
   let yImgTram = 600
-  xImgTram += 7
-  if (xImgTram > 1000) {
-    xImgTram = 1000
+  xImgTram += 5
+  if (xImgTram > 870) {
+    xImgTram = 870
   }
   //Arret de tram bas de page
   stroke(0, 0, 0)
   strokeWeight(10)
   fill(0, 200, 0)
-  rect(900, yImgTram - 90, 350, 175, 20)
+  image(imgArret, 900, yImgTram - 90, 350, 175, 20)
   //Affichage tram en mouvement
   image(imgTram, xImgTram, yImgTram, imgTram.width / 2, imgTram.height / 2)
+}
 
+function drawArret() {
+  stroke(0)
+  strokeWeight(4)
+  fill(0, 200, 0)
+  rect(962, 480, 172, 55)
+  noStroke()
+  textSize(25)
+  fill(0, 0, 0)
+  text("Moutonnerie", 980, 517)
 }
 
 function drawTitle() {
@@ -121,13 +131,15 @@ function setup() {
   dy = 300
 
   //création images
-  imgTram = loadImage('./Img/tram.png')
+  imgTram = loadImage('./Img/merde.png')
+  imgArret = loadImage('./Img/arret.png')
 }
 
 function draw() {
   background(255);
   drawClock()
   drawDigitalClock()
+  drawArret()
   drawTram()
   drawTitle()
 }
