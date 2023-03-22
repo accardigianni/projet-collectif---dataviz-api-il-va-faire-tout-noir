@@ -3,11 +3,15 @@ let secondsRadius;
 let minutesRadius;
 let hoursRadius;
 let clockDiameter;
+let img; // Declare variable 'img'.
+let xImgTram = 0
 
 function setup() {
   //création zone dessin sur toute la page
   createCanvas(windowWidth, windowHeight);
   stroke(255);
+  img = loadImage('./Img/Tram.png'); // Load the image
+  frameRate(20)
 
   let radius = min(200, 200) / 2;
 
@@ -31,6 +35,21 @@ function draw() {
   background(255);
   drawClock()
   drawDigitalClock()
+  let yImgTram = 600
+  xImgTram += 7
+  if (xImgTram > 1000) {
+    xImgTram = 1000
+  }
+
+  //rectancle
+  stroke(0, 0, 0)
+  strokeWeight(10)
+  fill(0, 200, 0)
+  rect(900, yImgTram - 90, 350, 175, 20)
+  // Displays the image at point (0, height/2) at half size
+  image(img, xImgTram, yImgTram, img.width / 2, img.height / 2);
+
+
 }
 
 // A voir!
@@ -78,3 +97,7 @@ function drawClock() {
   }
   endShape();
 }
+
+
+
+  //afficher le temps qu'il reste avant la prochaine fin de cloture 17h30
