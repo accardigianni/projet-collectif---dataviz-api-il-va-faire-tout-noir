@@ -198,11 +198,8 @@ function setup() {
   imgArret = loadImage('./Img/arret.png')
   imgAda = loadImage('./Img/ada.jpg')
   imgClock = loadImage('./Img/horloge.png')
-<<<<<<< HEAD
   imgRail = loadImage('./Img/rail1.png')
   buttonPokemon()
-=======
->>>>>>> 1e4840efe06756d08f433368066c1e83730c183a
 
   //appel du button
   buttonPokemon()
@@ -216,11 +213,8 @@ function draw() {
   drawTram()
   drawTitle()
   drawTime()
-<<<<<<< HEAD
-=======
   drawPokemon()
 
->>>>>>> 1e4840efe06756d08f433368066c1e83730c183a
 }
 
 reseauTan()
