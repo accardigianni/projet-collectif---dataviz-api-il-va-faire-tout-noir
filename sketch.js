@@ -5,6 +5,10 @@ let hoursRadius;
 let clockDiameter;
 let imgTram;
 let xImgTram = 0
+let passage1 = "Vide"
+let direction1 = "Vide"
+let passage2 = "Vide"
+let direction2 = "Vide"
 
 function drawDigitalClock() {
   textSize(40)
@@ -49,15 +53,21 @@ function drawClock() {
 async function reseauTan() {
   const response = await fetch('https://open.tan.fr/ewp/tempsattente.json/MOUT')
   const tram = await response.json()
-  let passage1 = tram[0].temps
-  let direction1 = tram[0].terminus
-  let passage2 = tram[1].temps
-  let direction2 = tram[1].terminus
+  passage1 = tram[0].temps
+  direction1 = tram[0].terminus
+  passage2 = tram[1].temps
+  direction2 = tram[1].terminus
   console.log(tram)
   console.log(passage1 + " vers " + direction1)
   console.log(passage2 + " vers " + direction2)
   setTimeout(reseauTan, 10000)
 }
+
+console.log(reseauTan())
+function drawTime() {
+  text(passage1, 500, 500)
+}
+
 
 const changePokemon = async () => {
   let randomNumber = Math.ceil(Math.random() * 150) + 1 // .random=> nombre [0, 149,99] + .ceil => plafone la valeur entière au dessus
@@ -142,6 +152,7 @@ function draw() {
   drawArret()
   drawTram()
   drawTitle()
+  drawTime()
 }
 
 reseauTan()
