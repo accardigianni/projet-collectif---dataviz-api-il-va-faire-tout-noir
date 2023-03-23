@@ -12,6 +12,7 @@ let direction2 = "Vide"
 let buffer = 0
 let imgClock;
 
+
 function drawDigitalClock() {
   textSize(40)
   stroke(0)
@@ -67,6 +68,13 @@ function drawClock() {
   // }
   endShape();
 }
+function buttonPokemon() {
+  let button;
+  imagePokemondraw = ""
+  button = createButton('animal totem');
+  button.position(100, 150);
+  button.mouseClicked(changePokemon);
+}
 
 async function reseauTan() {
   const response = await fetch('https://open.tan.fr/ewp/tempsattente.json/MOUT')
@@ -99,10 +107,15 @@ const changePokemon = async () => {
   let data = await fetch(requestString)
   let dataOK = await data.json()
   console.log(dataOK.sprites.other.dream_world.front_default)
-  let image = dataOK.sprites.other.dream_world.front_default
+  let imagePokemon = dataOK.sprites.other.dream_world.front_default
   console.log(dataOK)
   console.log("coucou")
-  document.getElementById("poke").innerHTML = "<img src= \" " + image + "\" >"
+
+
+  //renvoie l'image
+  loadImage(imagePokemon, img => {
+    image(img, 300, 300)
+  })
 }
 
 function drawTram() {
@@ -153,6 +166,11 @@ function drawTitle() {
   textSize(30)
   text("Time to get away !", 70, 110)
 }
+function drawPokemon() {
+  stroke(0, 0, 0)
+  strokeWeight(10)
+  image(imagePokemondraw, 300, 300)
+}
 
 function setup() {
   //création zone dessin sur toute la page
@@ -180,8 +198,10 @@ function setup() {
   imgArret = loadImage('./Img/arret.png')
   imgAda = loadImage('./Img/ada.jpg')
   imgClock = loadImage('./Img/horloge.png')
-}
+  buttonPokemon()
 
+}
+reseauTan()
 function draw() {
   background(255);
   drawClock()
@@ -190,6 +210,6 @@ function draw() {
   drawTram()
   drawTitle()
   drawTime()
+  drawPokemon()
 }
 
-reseauTan()
