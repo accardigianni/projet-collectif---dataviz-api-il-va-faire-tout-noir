@@ -7,11 +7,24 @@ let imgTram;
 let xImgTram = 0
 let imgClock;
 
+
 function drawDigitalClock() {
   textSize(40)
   stroke(0)
   fill(0, 200, 0)
-  text(hour() + ":" + minute() + ":" + second(), dx, dy)
+  let dHour = hour();
+  let dMin = minute();
+  let dSec = second();
+  if (dHour < 10) {
+    dHour = "0" + hour()
+  }
+  if (dMin < 10) {
+    dMin = "0" + minute()
+  }
+  if (dSec < 10) {
+    dSec = "0" + second()
+  }
+  text(dHour + ":" + dMin + ":" + dSec, dx, dy)
 }
 
 function drawClock() {
