@@ -11,6 +11,7 @@ let passage2 = "Vide"
 let direction2 = "Vide"
 let buffer = 0
 let imgClock;
+let imagePokemondraw
 
 
 function drawDigitalClock() {
@@ -30,6 +31,15 @@ function drawDigitalClock() {
     dSec = "0" + second()
   }
   text(dHour + ":" + dMin + ":" + dSec, dx, dy)
+}
+
+function buttonPokemon() {
+  let button;
+  imagePokemondraw = ""
+  button = createButton('animal totem');
+  button.position(100, 150);
+  button.mouseClicked(changePokemon);
+
 }
 
 function drawClock() {
@@ -68,13 +78,6 @@ function drawClock() {
   // }
   endShape();
 }
-function buttonPokemon() {
-  let button;
-  imagePokemondraw = ""
-  button = createButton('animal totem');
-  button.position(100, 150);
-  button.mouseClicked(changePokemon);
-}
 
 async function reseauTan() {
   const response = await fetch('https://open.tan.fr/ewp/tempsattente.json/MOUT')
@@ -87,6 +90,13 @@ async function reseauTan() {
   console.log(passage1 + " vers " + direction1)
   console.log(passage2 + " vers " + direction2)
   setTimeout(reseauTan, 10000)
+}
+
+function drawPokemon() {
+  if (imagePokemondraw) {
+    image(imagePokemondraw, 10, 300)
+  }
+
 }
 
 function drawTime() {
@@ -110,12 +120,8 @@ const changePokemon = async () => {
   let imagePokemon = dataOK.sprites.other.dream_world.front_default
   console.log(dataOK)
   console.log("coucou")
-
-
   //renvoie l'image
-  loadImage(imagePokemon, img => {
-    image(img, 300, 300)
-  })
+  imagePokemondraw = loadImage(imagePokemon)
 }
 
 function drawTram() {
@@ -166,7 +172,6 @@ function drawTitle() {
   textSize(30)
   text("Time to get away !", 70, 110)
 }
- 
 
 function setup() {
   //création zone dessin sur toute la page
@@ -194,10 +199,11 @@ function setup() {
   imgArret = loadImage('./Img/arret.png')
   imgAda = loadImage('./Img/ada.jpg')
   imgClock = loadImage('./Img/horloge.png')
-  buttonPokemon()
 
+  //appel du button
+  buttonPokemon()
 }
-reseauTan()
+
 function draw() {
   background(255);
   drawClock()
@@ -206,6 +212,8 @@ function draw() {
   drawTram()
   drawTitle()
   drawTime()
+  drawPokemon()
 
 }
 
+reseauTan()
