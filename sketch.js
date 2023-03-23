@@ -5,6 +5,13 @@ let hoursRadius;
 let clockDiameter;
 let imgTram;
 let xImgTram = 0
+let passage1 = "Vide"
+let direction1 = "Vide"
+let passage2 = "Vide"
+let direction2 = "Vide"
+let buffer = 0
+let imgClock;
+
 
 
 let imagePokemondraw
@@ -13,16 +20,32 @@ let imagePokemondraw
 
 function drawDigitalClock() {
   textSize(40)
-  text(hour() + ":" + minute() + ":" + second(), dx, dy)
+  stroke(0)
+  fill(0, 200, 0)
+  let dHour = hour();
+  let dMin = minute();
+  let dSec = second();
+  if (dHour < 10) {
+    dHour = "0" + hour()
+  }
+  if (dMin < 10) {
+    dMin = "0" + minute()
+  }
+  if (dSec < 10) {
+    dSec = "0" + second()
+  }
+  text(dHour + ":" + dMin + ":" + dSec, dx, dy)
 }
 
 function drawClock() {
   // Draw the clock background
   noStroke();
   fill(244, 122, 158);
-  ellipse(cx, cy, clockDiameter + 25, clockDiameter + 25);
+
+  //ellipse(cx, cy, clockDiameter + 25, clockDiameter + 25);
   fill(237, 34, 93);
-  ellipse(cx, cy, clockDiameter, clockDiameter);
+  //ellipse(cx, cy, clockDiameter, clockDiameter);
+  image(imgClock, cx - 85, cy - 87, imgClock.width / 2, imgClock.height / 2)
 
   // Angles for sin() and cos() start at 3 o'clock;
   // subtract HALF_PI to make them start at the top
@@ -31,7 +54,7 @@ function drawClock() {
   let h = map(hour() + norm(minute(), 0, 60), 0, 24, 0, TWO_PI * 2) - HALF_PI;
 
   // Draw the hands of the clock
-  stroke(255);
+  stroke(0, 200, 0);
   strokeWeight(1);
   line(cx, cy, cx + cos(s) * secondsRadius, cy + sin(s) * secondsRadius);
   strokeWeight(2);
@@ -64,6 +87,15 @@ async function reseauTan() {
   setTimeout(reseauTan, 10000)
 }
 
+function drawTime() {
+  textSize(13)
+  noStroke()
+  fill(0)
+  text("  " + passage1 + "\n" + "  vers" + "\n" + direction1, 600, 495)
+  text(" " + passage2 + "\n" + "  vers" + "\n" + direction2, 850, 495)
+}
+
+
 const changePokemon = async () => {
   let randomNumber = Math.ceil(Math.random() * 150) + 1 // .random=> nombre [0, 149,99] + .ceil => plafone la valeur entière au dessus
   let requestString = `https://pokeapi.co/api/v2/pokemon/${randomNumber}`;// on fait +1 a la fin pour éviter le 0(no pokemon)
@@ -90,15 +122,28 @@ const changePokemon = async () => {
 
 function drawTram() {
   let yImgTram = 600
-  xImgTram += 5
-  if (xImgTram > 870) {
-    xImgTram = 870
+  if (passage1 != "proche" && buffer == 0) {
+    xImgTram = -600
+  } else if (passage1 == "proche") {
+    xImgTram += 5
+    if (xImgTram > 570) {
+      buffer = 1
+      xImgTram = 570
+    }
+  } else if (passage1 != "proche" && buffer == 1) {
+    xImgTram += 5
+    console.log("coucou")
+    if (xImgTram == 2500) {
+      xImgTram = -600
+      buffer = 0
+    }
   }
   //Arret de tram bas de page
   stroke(0, 0, 0)
   strokeWeight(10)
   fill(0, 200, 0)
-  image(imgArret, 900, yImgTram - 90, 350, 175, 20)
+  image(imgArret, 600, yImgTram - 90, 350, 175, 20)
+  image(imgAda, 713, 568, 28, 34)
   //Affichage tram en mouvement
   image(imgTram, xImgTram, yImgTram, imgTram.width / 2, imgTram.height / 2)
 }
@@ -107,17 +152,18 @@ function drawArret() {
   stroke(0)
   strokeWeight(4)
   fill(0, 200, 0)
-  rect(962, 480, 172, 55)
+  rect(662, 455, 172, 55)
   noStroke()
   textSize(25)
   fill(0, 0, 0)
-  text("Moutonnerie", 980, 517)
+  text("Moutonnerie", 680, 490)
 }
 
 function drawTitle() {
   textSize(40)
   textFont('Helvetica');
-  noStroke()
+  stroke(3)
+  strokeWeight(1)
   text("Ada Tech School", 70, 70)
   textSize(30)
   text("Time to get away !", 70, 110)
@@ -161,9 +207,11 @@ function setup() {
   dy = 300
 
   //création images
-  imgTram = loadImage('./Img/merde.png')
+  imgTram = loadImage('./Img/tram.png')
   imgArret = loadImage('./Img/arret.png')
   buttonPokemon()
+  imgAda = loadImage('./Img/ada.jpg')
+  imgClock = loadImage('./Img/horloge.png')
 }
 
 function draw() {
@@ -173,8 +221,7 @@ function draw() {
   drawArret()
   drawTram()
   drawTitle()
-  drawPokemon()
-
+  drawTime()
 }
 
 reseauTan()
