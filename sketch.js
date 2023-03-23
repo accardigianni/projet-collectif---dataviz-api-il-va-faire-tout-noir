@@ -5,9 +5,12 @@ let hoursRadius;
 let clockDiameter;
 let imgTram;
 let xImgTram = 0
+let imgClock;
 
 function drawDigitalClock() {
   textSize(40)
+  stroke(0)
+  fill(0, 200, 0)
   text(hour() + ":" + minute() + ":" + second(), dx, dy)
 }
 
@@ -15,9 +18,11 @@ function drawClock() {
   // Draw the clock background
   noStroke();
   fill(244, 122, 158);
-  ellipse(cx, cy, clockDiameter + 25, clockDiameter + 25);
+
+  //ellipse(cx, cy, clockDiameter + 25, clockDiameter + 25);
   fill(237, 34, 93);
-  ellipse(cx, cy, clockDiameter, clockDiameter);
+  //ellipse(cx, cy, clockDiameter, clockDiameter);
+  image(imgClock, cx - 85, cy - 87, imgClock.width / 2, imgClock.height / 2)
 
   // Angles for sin() and cos() start at 3 o'clock;
   // subtract HALF_PI to make them start at the top
@@ -26,7 +31,7 @@ function drawClock() {
   let h = map(hour() + norm(minute(), 0, 60), 0, 24, 0, TWO_PI * 2) - HALF_PI;
 
   // Draw the hands of the clock
-  stroke(255);
+  stroke(0, 200, 0);
   strokeWeight(1);
   line(cx, cy, cx + cos(s) * secondsRadius, cy + sin(s) * secondsRadius);
   strokeWeight(2);
@@ -103,7 +108,8 @@ function drawArret() {
 function drawTitle() {
   textSize(40)
   textFont('Helvetica');
-  noStroke()
+  stroke(3)
+  strokeWeight(1)
   text("Ada Tech School", 70, 70)
   textSize(30)
   text("Time to get away !", 70, 110)
@@ -133,6 +139,7 @@ function setup() {
   //création images
   imgTram = loadImage('./Img/merde.png')
   imgArret = loadImage('./Img/arret.png')
+  imgClock = loadImage('./Img/horloge.png')
 }
 
 function draw() {
