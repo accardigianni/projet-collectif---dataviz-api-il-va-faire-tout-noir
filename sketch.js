@@ -11,7 +11,7 @@ let passage2 = "Vide"
 let direction2 = "Vide"
 let buffer = 0
 let imgClock;
-
+let test = null
 
 function drawDigitalClock() {
   textSize(40)
