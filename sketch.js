@@ -65,7 +65,10 @@ async function reseauTan() {
 
 console.log(reseauTan())
 function drawTime() {
-  text(passage1, 500, 500)
+  textSize(13)
+  fill(0)
+  text("  " + passage1 + "\n" + "  vers" + "\n" + direction1, 600, 495)
+  text(" " + passage2 + "\n" + "  vers" + "\n" + direction2, 850, 495)
 }
 
 
@@ -87,14 +90,15 @@ const changePokemon = async () => {
 function drawTram() {
   let yImgTram = 600
   xImgTram += 5
-  if (xImgTram > 870) {
-    xImgTram = 870
+  if (xImgTram > 570) {
+    xImgTram = 570
   }
   //Arret de tram bas de page
   stroke(0, 0, 0)
   strokeWeight(10)
   fill(0, 200, 0)
-  image(imgArret, 900, yImgTram - 90, 350, 175, 20)
+  image(imgArret, 600, yImgTram - 90, 350, 175, 20)
+  image(imgAda, 713, 567, 28, 35)
   //Affichage tram en mouvement
   image(imgTram, xImgTram, yImgTram, imgTram.width / 2, imgTram.height / 2)
 }
@@ -103,11 +107,11 @@ function drawArret() {
   stroke(0)
   strokeWeight(4)
   fill(0, 200, 0)
-  rect(962, 480, 172, 55)
+  rect(662, 455, 172, 55)
   noStroke()
   textSize(25)
   fill(0, 0, 0)
-  text("Moutonnerie", 980, 517)
+  text("Moutonnerie", 680, 490)
 }
 
 function drawTitle() {
@@ -141,8 +145,9 @@ function setup() {
   dy = 300
 
   //création images
-  imgTram = loadImage('./Img/merde.png')
+  imgTram = loadImage('./Img/tram.png')
   imgArret = loadImage('./Img/arret.png')
+  imgAda = loadImage('./Img/ada.jpg')
 }
 
 function draw() {
