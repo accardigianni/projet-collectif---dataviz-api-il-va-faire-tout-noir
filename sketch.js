@@ -9,6 +9,7 @@ let passage1 = "Vide"
 let direction1 = "Vide"
 let passage2 = "Vide"
 let direction2 = "Vide"
+let buffer = 0
 
 function drawDigitalClock() {
   textSize(40)
@@ -63,7 +64,6 @@ async function reseauTan() {
   setTimeout(reseauTan, 10000)
 }
 
-console.log(reseauTan())
 function drawTime() {
   textSize(13)
   fill(0)
@@ -89,16 +89,28 @@ const changePokemon = async () => {
 
 function drawTram() {
   let yImgTram = 600
-  xImgTram += 5
-  if (xImgTram > 570) {
-    xImgTram = 570
+  if (passage1 != "proche" && buffer == 0) {
+    xImgTram = -600
+  } else if (passage1 == "proche") {
+    xImgTram += 5
+    if (xImgTram > 570) {
+      buffer = 1
+      xImgTram = 570
+    }
+  } else if (passage1 != "proche" && buffer == 1) {
+    xImgTram += 5
+    console.log("coucou")
+    if (xImgTram == 2500) {
+      xImgTram = -600
+      buffer = 0
+    }
   }
   //Arret de tram bas de page
   stroke(0, 0, 0)
   strokeWeight(10)
   fill(0, 200, 0)
   image(imgArret, 600, yImgTram - 90, 350, 175, 20)
-  image(imgAda, 713, 567, 28, 35)
+  image(imgAda, 713, 568, 28, 34)
   //Affichage tram en mouvement
   image(imgTram, xImgTram, yImgTram, imgTram.width / 2, imgTram.height / 2)
 }
