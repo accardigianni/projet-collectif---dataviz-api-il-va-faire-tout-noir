@@ -11,7 +11,6 @@ let passage2 = "Vide"
 let direction2 = "Vide"
 let buffer = 0
 let imgClock;
-let test = null
 
 function drawDigitalClock() {
   textSize(40)
@@ -60,12 +59,12 @@ function drawClock() {
   // Draw the minute ticks
   strokeWeight(2);
   beginShape(POINTS);
-  for (let a = 0; a < 360; a += 6) {
-    let angle = radians(a);
-    let x = cx + cos(angle) * secondsRadius;
-    let y = cy + sin(angle) * secondsRadius;
-    vertex(x, y);
-  }
+  // for (let a = 0; a < 360; a += 6) {
+  //   let angle = radians(a);
+  //   let x = cx + cos(angle) * secondsRadius;
+  //   let y = cy + sin(angle) * secondsRadius;
+  //   vertex(x, y);
+  // }
   endShape();
 }
 
