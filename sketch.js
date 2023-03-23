@@ -11,6 +11,8 @@ let passage2 = "Vide"
 let direction2 = "Vide"
 let buffer = 0
 let imgClock;
+let imagePokemondraw
+
 
 function drawDigitalClock() {
   textSize(40)
@@ -29,6 +31,15 @@ function drawDigitalClock() {
     dSec = "0" + second()
   }
   text(dHour + ":" + dMin + ":" + dSec, dx, dy)
+}
+
+function buttonPokemon() {
+  let button;
+  imagePokemondraw = ""
+  button = createButton('animal totem');
+  button.position(100, 150);
+  button.mouseClicked(changePokemon);
+
 }
 
 function drawClock() {
@@ -81,6 +92,13 @@ async function reseauTan() {
   setTimeout(reseauTan, 10000)
 }
 
+function drawPokemon() {
+  if (imagePokemondraw) {
+    image(imagePokemondraw, 10, 300)
+  }
+
+}
+
 function drawTime() {
   textSize(13)
   noStroke()
@@ -99,10 +117,11 @@ const changePokemon = async () => {
   let data = await fetch(requestString)
   let dataOK = await data.json()
   console.log(dataOK.sprites.other.dream_world.front_default)
-  let image = dataOK.sprites.other.dream_world.front_default
+  let imagePokemon = dataOK.sprites.other.dream_world.front_default
   console.log(dataOK)
   console.log("coucou")
-  document.getElementById("poke").innerHTML = "<img src= \" " + image + "\" >"
+  //renvoie l'image
+  imagePokemondraw = loadImage(imagePokemon)
 }
 
 function drawTram() {
@@ -180,6 +199,9 @@ function setup() {
   imgArret = loadImage('./Img/arret.png')
   imgAda = loadImage('./Img/ada.jpg')
   imgClock = loadImage('./Img/horloge.png')
+
+  //appel du button
+  buttonPokemon()
 }
 
 function draw() {
@@ -190,6 +212,8 @@ function draw() {
   drawTram()
   drawTitle()
   drawTime()
+  drawPokemon()
+
 }
 
 reseauTan()
