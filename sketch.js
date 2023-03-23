@@ -12,12 +12,6 @@ let direction2 = "Vide"
 let buffer = 0
 let imgClock;
 
-
-
-let imagePokemondraw
-
-
-
 function drawDigitalClock() {
   textSize(40)
   stroke(0)
@@ -65,23 +59,23 @@ function drawClock() {
   // Draw the minute ticks
   strokeWeight(2);
   beginShape(POINTS);
-  /*   for (let a = 0; a < 360; a += 6) {
-      let angle = radians(a);
-      let x = cx + cos(angle) * secondsRadius;
-      let y = cy + sin(angle) * secondsRadius;
-      vertex(x, y);
-    } */
+  // for (let a = 0; a < 360; a += 6) {
+  //   let angle = radians(a);
+  //   let x = cx + cos(angle) * secondsRadius;
+  //   let y = cy + sin(angle) * secondsRadius;
+  //   vertex(x, y);
+  // }
   endShape();
 }
 
 async function reseauTan() {
   const response = await fetch('https://open.tan.fr/ewp/tempsattente.json/MOUT')
   const tram = await response.json()
-  let passage1 = tram[0].temps
-  let direction1 = tram[0].terminus
-  let passage2 = tram[1].temps
-  let direction2 = tram[1].terminus
-
+  passage1 = tram[0].temps
+  direction1 = tram[0].terminus
+  passage2 = tram[1].temps
+  direction2 = tram[1].terminus
+  console.log(tram)
   console.log(passage1 + " vers " + direction1)
   console.log(passage2 + " vers " + direction2)
   setTimeout(reseauTan, 10000)
@@ -98,26 +92,17 @@ function drawTime() {
 
 const changePokemon = async () => {
   let randomNumber = Math.ceil(Math.random() * 150) + 1 // .random=> nombre [0, 149,99] + .ceil => plafone la valeur entière au dessus
+  console.log("randomnumbder", randomNumber)
   let requestString = `https://pokeapi.co/api/v2/pokemon/${randomNumber}`;// on fait +1 a la fin pour éviter le 0(no pokemon)
+  console.log("request", requestString)
+
   let data = await fetch(requestString)
   let dataOK = await data.json()
-  let imagePokemon = dataOK.sprites.other.dream_world.front_default
-  console.log(imagePokemon);
-
-  //renvoie l'image
-  loadImage(imagePokemon, img => {
-    image(img, 300, 300)
-  })
-  console.log(imagePokemondraw)
-
-
-
-
-
-  // marche mais se superpose
-  // let imagePokemondraw = createImg(imagePokemon, "", 'anonymous')
-  // imagePokemondraw.position(300, 300)
-
+  console.log(dataOK.sprites.other.dream_world.front_default)
+  let image = dataOK.sprites.other.dream_world.front_default
+  console.log(dataOK)
+  console.log("coucou")
+  document.getElementById("poke").innerHTML = "<img src= \" " + image + "\" >"
 }
 
 function drawTram() {
@@ -168,27 +153,11 @@ function drawTitle() {
   textSize(30)
   text("Time to get away !", 70, 110)
 }
-// dans le setup sinon appeler 60/s
-function buttonPokemon() {
-  let button;
-  imagePokemondraw = ""
-  button = createButton('animal totem');
-  button.position(100, 150);
-  button.mouseClicked(changePokemon);
-}
-
-function drawPokemon() {
-  stroke(0, 0, 0)
-  strokeWeight(10)
-  image(imagePokemondraw, 300, 300)
-}
 
 function setup() {
   //création zone dessin sur toute la page
   createCanvas(windowWidth, windowHeight);
   stroke(255);
-  
-
 
   let radius = min(200, 200) / 2;
 
@@ -209,7 +178,6 @@ function setup() {
   //création images
   imgTram = loadImage('./Img/tram.png')
   imgArret = loadImage('./Img/arret.png')
-  buttonPokemon()
   imgAda = loadImage('./Img/ada.jpg')
   imgClock = loadImage('./Img/horloge.png')
 }
