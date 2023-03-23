@@ -6,6 +6,11 @@ let clockDiameter;
 let imgTram;
 let xImgTram = 0
 
+
+let imagePokemondraw
+
+
+
 function drawDigitalClock() {
   textSize(40)
   text(hour() + ":" + minute() + ":" + second(), dx, dy)
@@ -53,7 +58,7 @@ async function reseauTan() {
   let direction1 = tram[0].terminus
   let passage2 = tram[1].temps
   let direction2 = tram[1].terminus
-  console.log(tram)
+
   console.log(passage1 + " vers " + direction1)
   console.log(passage2 + " vers " + direction2)
   setTimeout(reseauTan, 10000)
@@ -61,17 +66,26 @@ async function reseauTan() {
 
 const changePokemon = async () => {
   let randomNumber = Math.ceil(Math.random() * 150) + 1 // .random=> nombre [0, 149,99] + .ceil => plafone la valeur entière au dessus
-  console.log("randomnumbder", randomNumber)
   let requestString = `https://pokeapi.co/api/v2/pokemon/${randomNumber}`;// on fait +1 a la fin pour éviter le 0(no pokemon)
-  console.log("request", requestString)
-
   let data = await fetch(requestString)
   let dataOK = await data.json()
-  console.log(dataOK.sprites.other.dream_world.front_default)
-  let image = dataOK.sprites.other.dream_world.front_default
-  console.log(dataOK)
-  console.log("coucou")
-  document.getElementById("poke").innerHTML = "<img src= \" " + image + "\" >"
+  let imagePokemon = dataOK.sprites.other.dream_world.front_default
+  console.log(imagePokemon);
+
+  //renvoie l'image
+  loadImage(imagePokemon, img => {
+    image(img, 300, 300)
+  })
+  console.log(imagePokemondraw)
+
+
+
+
+
+  // marche mais se superpose
+  // let imagePokemondraw = createImg(imagePokemon, "", 'anonymous')
+  // imagePokemondraw.position(300, 300)
+
 }
 
 function drawTram() {
@@ -108,11 +122,27 @@ function drawTitle() {
   textSize(30)
   text("Time to get away !", 70, 110)
 }
+// dans le setup sinon appeler 60/s
+function buttonPokemon() {
+  let button;
+  imagePokemondraw = ""
+  button = createButton('animal totem');
+  button.position(100, 150);
+  button.mouseClicked(changePokemon);
+}
+
+function drawPokemon() {
+  stroke(0, 0, 0)
+  strokeWeight(10)
+  image(imagePokemondraw, 300, 300)
+}
 
 function setup() {
   //création zone dessin sur toute la page
   createCanvas(windowWidth, windowHeight);
   stroke(255);
+  
+
 
   let radius = min(200, 200) / 2;
 
@@ -133,6 +163,7 @@ function setup() {
   //création images
   imgTram = loadImage('./Img/merde.png')
   imgArret = loadImage('./Img/arret.png')
+  buttonPokemon()
 }
 
 function draw() {
@@ -142,6 +173,8 @@ function draw() {
   drawArret()
   drawTram()
   drawTitle()
+  drawPokemon()
+
 }
 
 reseauTan()
