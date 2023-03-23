@@ -187,7 +187,7 @@ function setup() {
   //création zone dessin sur toute la page
   createCanvas(windowWidth, windowHeight);
   stroke(255);
-  
+
 
 
   let radius = min(200, 200) / 2;
@@ -212,8 +212,9 @@ function setup() {
   buttonPokemon()
   imgAda = loadImage('./Img/ada.jpg')
   imgClock = loadImage('./Img/horloge.png')
+  
 }
-
+reseauTan()
 function draw() {
   background(255);
   drawClock()
@@ -224,4 +225,3 @@ function draw() {
   drawTime()
 }
 
-reseauTan()
