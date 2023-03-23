@@ -166,11 +166,7 @@ function drawTitle() {
   textSize(30)
   text("Time to get away !", 70, 110)
 }
-function drawPokemon() {
-  stroke(0, 0, 0)
-  strokeWeight(10)
-  image(imagePokemondraw, 300, 300)
-}
+ 
 
 function setup() {
   //création zone dessin sur toute la page
@@ -210,6 +206,6 @@ function draw() {
   drawTram()
   drawTitle()
   drawTime()
-  drawPokemon()
+
 }
 
