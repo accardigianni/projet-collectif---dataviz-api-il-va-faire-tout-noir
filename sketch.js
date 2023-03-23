@@ -84,6 +84,7 @@ async function reseauTan() {
 
 function drawTime() {
   textSize(13)
+  noStroke()
   fill(0)
   text("  " + passage1 + "\n" + "  vers" + "\n" + direction1, 600, 495)
   text(" " + passage2 + "\n" + "  vers" + "\n" + direction2, 850, 495)
