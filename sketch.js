@@ -5,6 +5,11 @@ let hoursRadius;
 let clockDiameter;
 let imgTram;
 let xImgTram = 0
+let passage1 = "Vide"
+let direction1 = "Vide"
+let passage2 = "Vide"
+let direction2 = "Vide"
+let buffer = 0
 let imgClock;
 
 
@@ -67,15 +72,23 @@ function drawClock() {
 async function reseauTan() {
   const response = await fetch('https://open.tan.fr/ewp/tempsattente.json/MOUT')
   const tram = await response.json()
-  let passage1 = tram[0].temps
-  let direction1 = tram[0].terminus
-  let passage2 = tram[1].temps
-  let direction2 = tram[1].terminus
+  passage1 = tram[0].temps
+  direction1 = tram[0].terminus
+  passage2 = tram[1].temps
+  direction2 = tram[1].terminus
   console.log(tram)
   console.log(passage1 + " vers " + direction1)
   console.log(passage2 + " vers " + direction2)
   setTimeout(reseauTan, 10000)
 }
+
+function drawTime() {
+  textSize(13)
+  fill(0)
+  text("  " + passage1 + "\n" + "  vers" + "\n" + direction1, 600, 495)
+  text(" " + passage2 + "\n" + "  vers" + "\n" + direction2, 850, 495)
+}
+
 
 const changePokemon = async () => {
   let randomNumber = Math.ceil(Math.random() * 150) + 1 // .random=> nombre [0, 149,99] + .ceil => plafone la valeur entière au dessus
@@ -94,15 +107,28 @@ const changePokemon = async () => {
 
 function drawTram() {
   let yImgTram = 600
-  xImgTram += 5
-  if (xImgTram > 870) {
-    xImgTram = 870
+  if (passage1 != "proche" && buffer == 0) {
+    xImgTram = -600
+  } else if (passage1 == "proche") {
+    xImgTram += 5
+    if (xImgTram > 570) {
+      buffer = 1
+      xImgTram = 570
+    }
+  } else if (passage1 != "proche" && buffer == 1) {
+    xImgTram += 5
+    console.log("coucou")
+    if (xImgTram == 2500) {
+      xImgTram = -600
+      buffer = 0
+    }
   }
   //Arret de tram bas de page
   stroke(0, 0, 0)
   strokeWeight(10)
   fill(0, 200, 0)
-  image(imgArret, 900, yImgTram - 90, 350, 175, 20)
+  image(imgArret, 600, yImgTram - 90, 350, 175, 20)
+  image(imgAda, 713, 568, 28, 34)
   //Affichage tram en mouvement
   image(imgTram, xImgTram, yImgTram, imgTram.width / 2, imgTram.height / 2)
 }
@@ -111,11 +137,11 @@ function drawArret() {
   stroke(0)
   strokeWeight(4)
   fill(0, 200, 0)
-  rect(962, 480, 172, 55)
+  rect(662, 455, 172, 55)
   noStroke()
   textSize(25)
   fill(0, 0, 0)
-  text("Moutonnerie", 980, 517)
+  text("Moutonnerie", 680, 490)
 }
 
 function drawTitle() {
@@ -150,8 +176,9 @@ function setup() {
   dy = 300
 
   //création images
-  imgTram = loadImage('./Img/merde.png')
+  imgTram = loadImage('./Img/tram.png')
   imgArret = loadImage('./Img/arret.png')
+  imgAda = loadImage('./Img/ada.jpg')
   imgClock = loadImage('./Img/horloge.png')
 }
 
@@ -162,6 +189,7 @@ function draw() {
   drawArret()
   drawTram()
   drawTitle()
+  drawTime()
 }
 
 reseauTan()
