@@ -94,7 +94,7 @@ async function reseauTan() {
 
 function drawPokemon() {
   if (imagePokemondraw) {
-    image(imagePokemondraw, 10, 300)
+    image(imagePokemondraw, 70, 300, imagePokemondraw.width / 2, imagePokemondraw.height / 2)
   }
 
 }
@@ -203,6 +203,19 @@ function setup() {
   //appel du button
   buttonPokemon()
 }
+
+function closure() {
+  let closure = new Date('Janvier 1, 1970 17:30:00')
+  let now = new Date()
+  let closureTime = closure.getTime()
+  let nowTime = now.getTime()
+  let delta = closureTime - nowTime
+  let result = new Date(delta)
+  //text(result.getHours() + ":" + result.getMinutes() + ":" + result.getSeconds(), 200, 200)
+  console.log(result);
+
+}
+closure()
 
 function draw() {
   background(255);
