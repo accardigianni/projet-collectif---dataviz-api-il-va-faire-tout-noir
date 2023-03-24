@@ -70,12 +70,6 @@ function drawClock() {
   // Draw the minute ticks
   strokeWeight(2);
   beginShape(POINTS);
-  // for (let a = 0; a < 360; a += 6) {
-  //   let angle = radians(a);
-  //   let x = cx + cos(angle) * secondsRadius;
-  //   let y = cy + sin(angle) * secondsRadius;
-  //   vertex(x, y);
-  // }
   endShape();
 }
 
@@ -136,7 +130,6 @@ function drawTram() {
     }
   } else if (passage1 != "proche" && buffer == 1) {
     xImgTram += 5
-    console.log("coucou")
     if (xImgTram == 2500) {
       xImgTram = -600
       buffer = 0
@@ -146,8 +139,18 @@ function drawTram() {
   stroke(0, 0, 0)
   strokeWeight(10)
   fill(0, 200, 0)
+  let xRail = 0
+  for (i = 0; i < 50; i++) {
+    image(imgRail, xRail, 550, 50, 50)
+    xRail += 50
+  }
   image(imgArret, 600, yImgTram - 90, 350, 175, 20)
   image(imgAda, 713, 568, 28, 34)
+  xRail = 0
+  for (i = 0; i < 50; i++) {
+    image(imgRail, xRail, 650, 50, 50)
+    xRail += 50
+  }
   //Affichage tram en mouvement
   image(imgTram, xImgTram, yImgTram, imgTram.width / 2, imgTram.height / 2)
 }
@@ -199,6 +202,8 @@ function setup() {
   imgArret = loadImage('./Img/arret.png')
   imgAda = loadImage('./Img/ada.jpg')
   imgClock = loadImage('./Img/horloge.png')
+  imgRail = loadImage('./Img/rail1.png')
+  buttonPokemon()
 
   //appel du button
   buttonPokemon()
