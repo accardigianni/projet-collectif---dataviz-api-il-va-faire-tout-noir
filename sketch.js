@@ -15,6 +15,7 @@ let secondsRadius;
 let minutesRadius;      // Horloge a aiguilles
 let hoursRadius;
 let clockDiameter;      //Taille horloge
+let delta;              //différence entre heure de maintenant et heure de cloture
 
 
 //Déclaration des images globales
@@ -91,14 +92,9 @@ function drawClock() {
 }
 
 function closure() {
-  let closure = new Date('Janvier 1, 1970 17:30:00')
-  let now = new Date()
-  let closureTime = closure.getTime()
-  let nowTime = now.getTime()
-  let delta = closureTime - nowTime
-  let result = new Date(delta)
-  //text(result.getHours() + ":" + result.getMinutes() + ":" + result.getSeconds(), 200, 200)
-  console.log(result);
+  let closureTime = (new Date('Janvier 1, 1970 17:00:00')).getTime()
+  let nowTime = (new Date()).getTime()
+  delta = new Date(closureTime - nowTime)
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
@@ -211,9 +207,15 @@ function drawTitle() {
   textFont('Helvetica');      //Police d'écriture
   stroke(3)
   strokeWeight(1)
-  text("Ada Tech School", 70, 70)
-  textSize(30)
-  text("Time to get away !", 70, 110)
+  text("Ada Tech School", 70, 35)
+  textSize(20)
+  fill(220, 10, 50)
+  text("Cloture dans " + (delta.getHours()) + "h" + (delta.getMinutes()) + "m" + (delta.getSeconds()) + "s", 70, 75)
+  if (delta.getHours() == 0 || delta.getHours() > 8) { //peut-etre rajouetr des conditions pour les minutes si on veut se prendre la tete
+    textSize(30)
+    text("Time to get away !", 70, 110)
+  }
+
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
@@ -256,13 +258,15 @@ function draw() {             //Execution 60 fois par seconde
   background(255);
   drawClock()
   drawDigitalClock()
+  closure()
   drawNameArret()
   drawTram()
   drawTitle()
   drawWait()
   drawPokemon()
+
 }
 
 //Appels en dehors de draw() pour eviter l'execution 60 fois par seconde
-closure()
+
 reseauTan()
