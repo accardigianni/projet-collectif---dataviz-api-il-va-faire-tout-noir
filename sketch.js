@@ -88,7 +88,7 @@ async function reseauTan() {
 
 function drawPokemon() {
   if (imagePokemondraw) {
-    image(imagePokemondraw, 10, 300)
+    image(imagePokemondraw, 70, 300, imagePokemondraw.width / 2, imagePokemondraw.height / 2)
   }
 
 }
@@ -130,7 +130,6 @@ function drawTram() {
     }
   } else if (passage1 != "proche" && buffer == 1) {
     xImgTram += 5
-    console.log("coucou")
     if (xImgTram == 2500) {
       xImgTram = -600
       buffer = 0
@@ -140,9 +139,14 @@ function drawTram() {
   stroke(0, 0, 0)
   strokeWeight(10)
   fill(0, 200, 0)
+  let xRail = 0
+  for (i = 0; i < 50; i++) {
+    image(imgRail, xRail, 550, 50, 50)
+    xRail += 50
+  }
   image(imgArret, 600, yImgTram - 90, 350, 175, 20)
   image(imgAda, 713, 568, 28, 34)
-  let xRail = 0
+  xRail = 0
   for (i = 0; i < 50; i++) {
     image(imgRail, xRail, 650, 50, 50)
     xRail += 50
@@ -204,6 +208,19 @@ function setup() {
   //appel du button
   buttonPokemon()
 }
+
+function closure() {
+  let closure = new Date('Janvier 1, 1970 17:30:00')
+  let now = new Date()
+  let closureTime = closure.getTime()
+  let nowTime = now.getTime()
+  let delta = closureTime - nowTime
+  let result = new Date(delta)
+  //text(result.getHours() + ":" + result.getMinutes() + ":" + result.getSeconds(), 200, 200)
+  console.log(result);
+
+}
+closure()
 
 function draw() {
   background(255);
