@@ -128,11 +128,10 @@ function launch() {
 function buttonPokemon() {
   let button;
   imagePokemondraw = ""
-  button = createButton('animal totem');    //Création bouton
+  button = createButton('get our animal totem');    //Création bouton
   button.position(100, 150);
   button.mouseClicked(changePokemon);       //Action avec appel de fonction
 }
-
 const changePokemon = async () => {  //Fonction fléchée
   let randomNumber = Math.ceil(Math.random() * 150) + 1   // .random=> nombre [0, 149,99] + .ceil => plafone la valeur entière au dessus
   let requestString = `https://pokeapi.co/api/v2/pokemon/${randomNumber}`;// on fait +1 a la fin pour éviter le 0(no pokemon)
@@ -145,8 +144,22 @@ const changePokemon = async () => {  //Fonction fléchée
 }
 
 function drawPokemon() {
+  let x= 380
+  let y = 280
   if (imagePokemondraw) {
-    image(imagePokemondraw, 70, 300, imagePokemondraw.width / 2, imagePokemondraw.height / 2)     //Affichage du pokemon sans erreur quand rien dans la variable
+    strokeWeight(3)
+    stroke(255)
+    fill(255)
+    rect(20, 200, 400, 300)
+    fill(0)
+    rect(30, 210, x, y)
+    if(imagePokemondraw.width > 180){
+      image(imagePokemondraw, 70, 250,imagePokemondraw.width/2, imagePokemondraw.height/2)     //Affichage du pokemon sans erreur quand rien dans la variable
+    } else if (imagePokemondraw.height>200){
+      image(imagePokemondraw, 70, 250,imagePokemondraw.width/3, imagePokemondraw.height/3)  
+    } else{
+      image(imagePokemondraw, 70, 250)     //Affichage du pokemon sans erreur quand rien dans la variable
+    }
   }
 }
 
@@ -225,6 +238,8 @@ function drawTram() {
   image(imgTram, xImgTram2, yImgTram1 - 100, imgTram.width / 2, imgTram.height / 2)       //Image du tram en mouvement
   image(imgArret, 600, yImgTram1 - 90, 350, 175, 20)
   image(imgAda, 713, 568, 28, 34)
+  image(imgArret, 600, yImgTram1 - 200, 350, 175, 20)
+  image(imgAda, 713, 568 - 110, 28, 34)
   xRail = 0
   for (let i = 0; i < 35; i++) {
     image(imgRail, xRail, 650, 50, 50)      //Rail du bas
@@ -246,11 +261,13 @@ function drawNameArret() {
   stroke(0)
   strokeWeight(4)
   fill(0, 200, 0)               //Cadre vert derriere le nom de l'arret
-  rect(662, 455, 172, 55)
+  //rect(662, 455, 172, 55)
+  rect(662, 355, 172, 55)
   noStroke()
   textSize(25)
   fill(0, 0, 0)                 //Nom arret dans le cadre
-  text("Moutonnerie", 680, 490)
+  //text("Moutonnerie", 680, 490)
+  text("Moutonnerie", 680, 390)
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
@@ -262,10 +279,11 @@ function drawTitle() {
   textSize(40)
   textFont('Helvetica');      //Police d'écriture
   stroke(3)
-  strokeWeight(1)
-  text("Ada Tech School", 70, 35)
+  strokeWeight(2)
+  text("Ada Tech School", 70, 45)
   textSize(20)
   fill(220, 10, 50)
+  strokeWeight(1)
   closure()
   launch()
   if (deltaClosure.getHours() == 0 || deltaClosure.getHours() > 8) { //peut-etre rajouetr des conditions pour les minutes si on veut se prendre la tete)
@@ -313,7 +331,7 @@ function setup() {
 
 
 function draw() {             //Execution 60 fois par seconde
-  background(255);
+  background(221, 249, 189);
   drawClock()
   drawDigitalClock()
   drawNameArret()
