@@ -194,6 +194,8 @@ function drawTram() {
     }
   }
 
+
+
   //Rail autour arret de tram
   let xRail = 0                 //Coordonée de base du premier rail
   for (let i = 0; i < 35; i++) {
