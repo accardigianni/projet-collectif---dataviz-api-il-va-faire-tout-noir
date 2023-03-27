@@ -95,16 +95,19 @@ function drawClock() {
   line(cx, cy, cx + cos(h) * hoursRadius, cy + sin(h) * hoursRadius);
 }
 
+console.log(new Date())
 //Set the closure time, compare to now and print it, whent relevent, called in drawTitle()
 function closure() {
   let closureTime = (new Date('Janvier 1, 1970 17:00:00')).getTime()
   let nowTime = (new Date()).getTime()
   deltaClosure = new Date(closureTime - nowTime)
-  if (deltaClosure.getHours() < 8) {
-    text("Cloture dans " +
-      (deltaClosure.getHours()) + "h" +
-      (deltaClosure.getMinutes()) + "m" +
-      (deltaClosure.getSeconds()) + "s", 70, 75)
+  if(closureTime-nowTime > 0){
+    if (deltaClosure.getHours() < 8) {
+      text("Cloture dans " +
+        (deltaClosure.getHours()-1) + "h" +
+        (deltaClosure.getMinutes()) + "m" +
+        (deltaClosure.getSeconds()) + "s", 70, 75)
+    }
   }
 }
 
@@ -112,13 +115,14 @@ function closure() {
 function launch() {
   let launchTime = (new Date('Janvier 1, 1970 9:30:00')).getTime()
   let nowTime = (new Date()).getTime()
-  deltaLaunch = new Date(launchTime - nowTime)
-  if (launchTime > nowTime) {
-    if ((deltaLaunch.getHours()) > 6)
+  if ((nowTime-launchTime)<0) {
+    deltaLaunch = new Date(launchTime - nowTime)
+    if (deltaLaunch.getHours()<4) {
       text("Lancement dans " +
-        (deltaLaunch.getHours()) + "h" +
-        (deltaLaunch.getMinutes()) + "m" +
-        (deltaLaunch.getSeconds()) + "s", 70, 75)
+      (deltaLaunch.getHours()) + "h" +
+      (deltaLaunch.getMinutes()) + "m" +
+      (deltaLaunch.getSeconds()) + "s", 70, 75)
+    }
   }
 }
 
