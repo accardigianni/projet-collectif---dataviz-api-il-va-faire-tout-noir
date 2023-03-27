@@ -210,7 +210,10 @@ function drawTitle() {
   text("Ada Tech School", 70, 35)
   textSize(20)
   fill(220, 10, 50)
-  text("Cloture dans " + (delta.getHours()) + "h" + (delta.getMinutes()) + "m" + (delta.getSeconds()) + "s", 70, 75)
+  text("Cloture dans " +
+    (delta.getHours()) + "h" +
+    (delta.getMinutes()) + "m" +
+    (delta.getSeconds()) + "s", 70, 75)
   if (delta.getHours() == 0 || delta.getHours() > 8) { //peut-etre rajouetr des conditions pour les minutes si on veut se prendre la tete
     textSize(30)
     text("Time to get away !", 70, 110)
