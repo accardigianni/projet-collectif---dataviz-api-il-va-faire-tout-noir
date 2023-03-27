@@ -8,6 +8,7 @@
 
 //déclaration variable globale
 let cx, cy, dx, dy;     //variable pour les differentes horloges
+let code = "vide"
 
 
 //Horloge
@@ -15,7 +16,7 @@ let secondsRadius;
 let minutesRadius;      // Horloge a aiguilles
 let hoursRadius;
 let clockDiameter;      //Taille horloge
-let delta;              //différence entre heure de maintenant et heure de cloture
+let deltaClosure;              //différence entre heure de maintenant et heure de cloture
 
 
 //Déclaration des images globales
@@ -73,14 +74,15 @@ function drawDigitalClock() {
   if (dSec < 10) {
     dSec = "0" + second()
   }
-
   text(dHour + ":" + dMin + ":" + dSec, dx, dy)       //affichage
 }
 
 function drawClock() {
   // Draw the clock background
   noStroke();
+  image(imgAdaHorloge, cx - 91, cy - 97, 174, 193)
   image(imgClock, cx - 91, cy - 87, imgClock.width / 2, imgClock.height / 2)
+
 
   // Angles for sin() and cos() start at 3 o'clock;
   // subtract HALF_PI to make them start at the top
@@ -89,7 +91,7 @@ function drawClock() {
   let h = map(hour() + norm(minute(), 0, 60), 0, 24, 0, TWO_PI * 2) - HALF_PI;
 
   // Draw the hands of the clock
-  stroke(0, 200, 0);
+  stroke(0);
   strokeWeight(1);
   line(cx, cy, cx + cos(s) * secondsRadius, cy + sin(s) * secondsRadius);
   strokeWeight(2);
@@ -98,10 +100,31 @@ function drawClock() {
   line(cx, cy, cx + cos(h) * hoursRadius, cy + sin(h) * hoursRadius);
 }
 
+//Set the closure time, compare to now and print it, whent relevent, called in drawTitle()
 function closure() {
   let closureTime = (new Date('Janvier 1, 1970 17:00:00')).getTime()
   let nowTime = (new Date()).getTime()
-  delta = new Date(closureTime - nowTime)
+  deltaClosure = new Date(closureTime - nowTime)
+  if (deltaClosure.getHours() < 8) {
+    text("Cloture dans " +
+      (deltaClosure.getHours()) + "h" +
+      (deltaClosure.getMinutes()) + "m" +
+      (deltaClosure.getSeconds()) + "s", 70, 75)
+  }
+}
+
+//Set the launch time, compare to now and print it, when relevent, called in drawTitle()
+function launch() {
+  let launchTime = (new Date('Janvier 1, 1970 9:30:00')).getTime()
+  let nowTime = (new Date()).getTime()
+  deltaLaunch = new Date(launchTime - nowTime)
+  if (launchTime > nowTime) {
+    if ((deltaLaunch.getHours()) > 6)
+      text("Lancement dans " +
+        (deltaLaunch.getHours()) + "h" +
+        (deltaLaunch.getMinutes()) + "m" +
+        (deltaLaunch.getSeconds()) + "s", 70, 75)
+  }
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
@@ -111,11 +134,10 @@ function closure() {
 function buttonPokemon() {
   let button;
   imagePokemondraw = ""
-  button = createButton('animal totem');    //Création bouton
+  button = createButton('get your animal totem');    //Création bouton
   button.position(100, 150);
   button.mouseClicked(changePokemon);       //Action avec appel de fonction
 }
-
 const changePokemon = async () => {  //Fonction fléchée
   let randomNumber = Math.ceil(Math.random() * 150) + 1   // .random=> nombre [0, 149,99] + .ceil => plafone la valeur entière au dessus
   let requestString = `https://pokeapi.co/api/v2/pokemon/${randomNumber}`;// on fait +1 a la fin pour éviter le 0(no pokemon)
@@ -128,7 +150,15 @@ const changePokemon = async () => {  //Fonction fléchée
 
 function drawPokemon() {
   if (imagePokemondraw) {
-    image(imagePokemondraw, 70, 300, imagePokemondraw.width / 2, imagePokemondraw.height / 2)     //Affichage du pokemon sans erreur quand rien dans la variable
+    strokeWeight(3)
+    stroke(255)
+    fill(255)
+    rect(20, 200, 400, 300)
+    fill(0)
+    rect(30, 210, 380, 280)
+    image(imagePokemondraw,
+      220 - (imagePokemondraw.width / 2) / 2, 350 - ((imagePokemondraw.height / 2) / 2),
+      imagePokemondraw.width / 2, imagePokemondraw.height / 2)     //Affichage du pokemon sans erreur quand rien dans la variable
   }
 }
 
@@ -136,8 +166,20 @@ function drawPokemon() {
 //------------------------------------------------------------------------------------------------------------------------------------------------
 //Tram et Arret
 
+navigator.geolocation.getCurrentPosition(position => {
+  const { latitude, longitude } = position.coords;
+  tanPos(latitude, longitude)
+  // Show a map centered at latitude / longitude.
+});
+
+async function tanPos(latitude, longitude) {
+  const response = await fetch(`https://open.tan.fr/ewp/arrets.json/${latitude}/${longitude}`)
+  const pos = await response.json()
+  code = pos[0].codeLieu
+  reseauTan(code)
+}
+
 async function reseauTan(code) {
-  console.log(code);
   const response = await fetch(`https://open.tan.fr/ewp/tempsattente.json/${code}`)    //Appel API Tan
   const tram = await response.json()        //Traduction pour comprehension de la reponse
   console.log(tram)
@@ -158,27 +200,9 @@ async function reseauTan(code) {
       break
     }
   }
-  //console.log(passage1 + " vers " + direction1)
-  //console.log(passage2 + " vers " + direction2)
+  console.log(passage1 + " vers " + direction1)
+  console.log(passage2 + " vers " + direction2)
   setTimeout(reseauTan, 5000, code)        //Ré-execution toutes les 10sec
-}
-navigator.geolocation.getCurrentPosition(position => {
-  latitude = position.coords.latitude;
-  longitude = position.coords.longitude
-  tanCoords(latitude, longitude)
-  //   // Show a map centered at latitude / longitude.
-});
-
-async function tanCoords(latitude, longitude) {
-  const response = await fetch(`https:open.tan.fr/ewp/arrets.json/${latitude}/${longitude}`)
-  const data = await response.json()
-  console.log(latitude);
-  console.log(longitude);
-  console.log(data);
-  codeArret = data[0].codeLieu
-  console.log(codeArret);
-  console.log(reseauTan(codeArret));
-
 }
 
 
@@ -229,6 +253,8 @@ function drawTram() {
   image(imgTram, xImgTram2, yImgTram1 - 100, imgTram.width / 2, imgTram.height / 2)       //Image du tram en mouvement
   image(imgArret, 600, yImgTram1 - 90, 350, 175, 20)
   image(imgAda, 713, 568, 28, 34)
+  image(imgArret, 600, yImgTram1 - 200, 350, 175, 20)
+  image(imgAda, 713, 568 - 110, 28, 34)
   xRail = 0
   for (let i = 0; i < 35; i++) {
     image(imgRail, xRail, 650, 50, 50)      //Rail du bas
@@ -250,11 +276,13 @@ function drawNameArret() {
   stroke(0)
   strokeWeight(4)
   fill(0, 200, 0)               //Cadre vert derriere le nom de l'arret
-  rect(662, 455, 172, 55)
+  //rect(662, 455, 172, 55)
+  rect(662, 355, 172, 55)
   noStroke()
   textSize(25)
   fill(0, 0, 0)                 //Nom arret dans le cadre
-  text("Moutonnerie", 680, 490)
+  //text("Moutonnerie", 680, 490)
+  text("Moutonnerie", 680, 390)
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
@@ -266,17 +294,19 @@ function drawTitle() {
   textSize(40)
   textFont('Helvetica');      //Police d'écriture
   stroke(3)
-  strokeWeight(1)
-  text("Ada Tech School", 70, 35)
+  strokeWeight(2)
+  text("Ada Tech School", 70, 45)
   textSize(20)
   fill(220, 10, 50)
-  text("Cloture dans " + (delta.getHours()) + "h" + (delta.getMinutes()) + "m" + (delta.getSeconds()) + "s", 70, 75)
-  if (delta.getHours() == 0 || delta.getHours() > 8) { //peut-etre rajouetr des conditions pour les minutes si on veut se prendre la tete
+  strokeWeight(1)
+  closure()
+  launch()
+  if (deltaClosure.getHours() == 0 || deltaClosure.getHours() > 8) { //peut-etre rajouetr des conditions pour les minutes si on veut se prendre la tete)
     textSize(30)
     text("Time to get away !", 70, 110)
   }
-
 }
+
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------Fonctions natives P5.JS
@@ -313,24 +343,20 @@ function setup() {
   imgAda = loadImage('./Img/ada.jpg')
   imgClock = loadImage('./Img/horloge.png')
   imgRail = loadImage('./Img/rail1.png')
+  imgAdaHorloge = loadImage('./Img/adaRond.png')
 
   //appel du button
   buttonPokemon()
 
 }
 
-
 function draw() {             //Execution 60 fois par seconde
-  background(255);
+  background(221, 249, 189);
   drawClock()
   drawDigitalClock()
-  closure()
   drawNameArret()
   drawWait()
   drawTram()
   drawTitle()
   drawPokemon()
-
 }
-
-//Appels en dehors de draw() pour eviter l'execution 60 fois par seconde
