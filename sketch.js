@@ -16,7 +16,7 @@ let secondsRadius;
 let minutesRadius;      // Horloge a aiguilles
 let hoursRadius;
 let clockDiameter;      //Taille horloge
-let delta;              //différence entre heure de maintenant et heure de cloture
+let deltaClosure;              //différence entre heure de maintenant et heure de cloture
 
 
 //Déclaration des images globales
@@ -69,7 +69,6 @@ function drawDigitalClock() {
   if (dSec < 10) {
     dSec = "0" + second()
   }
-
   text(dHour + ":" + dMin + ":" + dSec, dx, dy)       //affichage
 }
 
@@ -96,10 +95,31 @@ function drawClock() {
   line(cx, cy, cx + cos(h) * hoursRadius, cy + sin(h) * hoursRadius);
 }
 
+//Set the closure time, compare to now and print it, whent relevent, called in drawTitle()
 function closure() {
   let closureTime = (new Date('Janvier 1, 1970 17:00:00')).getTime()
   let nowTime = (new Date()).getTime()
-  delta = new Date(closureTime - nowTime)
+  deltaClosure = new Date(closureTime - nowTime)
+  if (deltaClosure.getHours() < 8) {
+    text("Cloture dans " +
+      (deltaClosure.getHours()) + "h" +
+      (deltaClosure.getMinutes()) + "m" +
+      (deltaClosure.getSeconds()) + "s", 70, 75)
+  }
+}
+
+//Set the launch time, compare to now and print it, when relevent, called in drawTitle()
+function launch() {
+  let launchTime = (new Date('Janvier 1, 1970 9:30:00')).getTime()
+  let nowTime = (new Date()).getTime()
+  deltaLaunch = new Date(launchTime - nowTime)
+  if (launchTime > nowTime) {
+    if ((deltaLaunch.getHours()) > 6)
+      text("Lancement dans " +
+        (deltaLaunch.getHours()) + "h" +
+        (deltaLaunch.getMinutes()) + "m" +
+        (deltaLaunch.getSeconds()) + "s", 70, 75)
+  }
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
@@ -260,13 +280,14 @@ function drawTitle() {
   text("Ada Tech School", 70, 35)
   textSize(20)
   fill(220, 10, 50)
-  text("Cloture dans " + (delta.getHours()) + "h" + (delta.getMinutes()) + "m" + (delta.getSeconds()) + "s", 70, 75)
-  if (delta.getHours() == 0 || delta.getHours() > 8) { //peut-etre rajouetr des conditions pour les minutes si on veut se prendre la tete
+  closure()
+  launch()
+  if (deltaClosure.getHours() == 0 || deltaClosure.getHours() > 8) { //peut-etre rajouetr des conditions pour les minutes si on veut se prendre la tete)
     textSize(30)
     text("Time to get away !", 70, 110)
   }
-
 }
+
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------Fonctions natives P5.JS
@@ -308,7 +329,6 @@ function draw() {             //Execution 60 fois par seconde
   background(255);
   drawClock()
   drawDigitalClock()
-  closure()
   drawNameArret()
   drawWait()
   drawTram()
