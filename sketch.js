@@ -75,7 +75,9 @@ function drawDigitalClock() {
 function drawClock() {
   // Draw the clock background
   noStroke();
-  image(imgClock, cx - 85, cy - 87, imgClock.width / 2, imgClock.height / 2)
+  image(imgAdaHorloge, cx - 91, cy - 97, 174, 193)
+  image(imgClock, cx - 91, cy - 87, imgClock.width / 2, imgClock.height / 2)
+
 
   // Angles for sin() and cos() start at 3 o'clock;
   // subtract HALF_PI to make them start at the top
@@ -84,7 +86,7 @@ function drawClock() {
   let h = map(hour() + norm(minute(), 0, 60), 0, 24, 0, TWO_PI * 2) - HALF_PI;
 
   // Draw the hands of the clock
-  stroke(0, 200, 0);
+  stroke(0);
   strokeWeight(1);
   line(cx, cy, cx + cos(s) * secondsRadius, cy + sin(s) * secondsRadius);
   strokeWeight(2);
@@ -280,6 +282,7 @@ function setup() {
   imgAda = loadImage('./Img/ada.jpg')
   imgClock = loadImage('./Img/horloge.png')
   imgRail = loadImage('./Img/rail1.png')
+  imgAdaHorloge = loadImage('./Img/adaRond.png')
 
   //appel du button
   buttonPokemon()
