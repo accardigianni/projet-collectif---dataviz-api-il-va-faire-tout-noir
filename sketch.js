@@ -101,16 +101,19 @@ function drawClock() {
   line(cx, cy, cx + cos(h) * hoursRadius, cy + sin(h) * hoursRadius);
 }
 
+console.log(new Date())
 //Set the closure time, compare to now and print it, whent relevent, called in drawTitle()
 function closure() {
   let closureTime = (new Date('Janvier 1, 1970 17:00:00')).getTime()
   let nowTime = (new Date()).getTime()
   deltaClosure = new Date(closureTime - nowTime)
-  if (deltaClosure.getHours() < 8) {
-    text("Cloture dans " +
-      (deltaClosure.getHours() - 1) + "h" +
-      (deltaClosure.getMinutes()) + "m" +
-      (deltaClosure.getSeconds()) + "s", 70, 75)
+  if(closureTime-nowTime > 0){
+    if (deltaClosure.getHours() < 8) {
+      text("Cloture dans " +
+        (deltaClosure.getHours()-1) + "h" +
+        (deltaClosure.getMinutes()) + "m" +
+        (deltaClosure.getSeconds()) + "s", 70, 75)
+    }
   }
 }
 
@@ -118,13 +121,14 @@ function closure() {
 function launch() {
   let launchTime = (new Date('Janvier 1, 1970 9:30:00')).getTime()
   let nowTime = (new Date()).getTime()
-  deltaLaunch = new Date(launchTime - nowTime)
-  if (launchTime > nowTime) {
-    if ((deltaLaunch.getHours()) > 6)
+  if ((nowTime-launchTime)<0) {
+    deltaLaunch = new Date(launchTime - nowTime)
+    if (deltaLaunch.getHours()<4) {
       text("Lancement dans " +
-        (deltaLaunch.getHours()) + "h" +
-        (deltaLaunch.getMinutes()) + "m" +
-        (deltaLaunch.getSeconds()) + "s", 70, 75)
+      (deltaLaunch.getHours()) + "h" +
+      (deltaLaunch.getMinutes()) + "m" +
+      (deltaLaunch.getSeconds()) + "s", 70, 75)
+    }
   }
 }
 
@@ -256,8 +260,6 @@ function drawTram() {
   image(imgTram, xImgTram2, yImgTram1 - 100, imgTram.width / 2, imgTram.height / 2)       //Image du tram en mouvement
   image(imgArret, 600, yImgTram1 - 90, 350, 175, 20)
   image(imgAda, 713, 568, 28, 34)
-  // image(imgArret, 600, yImgTram1 - 200, 350, 175, 20) image d'un deuxieme arret
-  // image(imgAda, 713, 568 - 110, 28, 34)
   xRail = 0
   for (let i = 0; i < 35; i++) {
     image(imgRail, xRail, 650, 50, 50)      //Rail du bas
@@ -280,15 +282,12 @@ function drawNameArret() {
   strokeWeight(4)
   fill(0, 200, 0)               //Cadre vert derriere le nom de l'arret
   rect(662, 455, 172, 55)
-  //rect(662, 355, 172, 55)
+  // rect(662, 355, 172, 55)
   noStroke()
   textSize(25)
-  fill(0, 0, 0)
+  fill(0, 0, 0)                 //Nom arret dans le cadre
   text("Moutonnerie", 680, 490)
-  // print()
-  // console.log(namearret)
-
-
+  // text("Moutonnerie", 680, 390)
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
