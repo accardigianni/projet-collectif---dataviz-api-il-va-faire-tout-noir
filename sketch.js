@@ -129,7 +129,7 @@ function launch() {
 function buttonPokemon() {
   let button;
   imagePokemondraw = ""
-  button = createButton('get our animal totem');    //Création bouton
+  button = createButton('get your animal totem');    //Création bouton
   button.position(100, 150);
   button.mouseClicked(changePokemon);       //Action avec appel de fonction
 }
@@ -145,22 +145,16 @@ const changePokemon = async () => {  //Fonction fléchée
 }
 
 function drawPokemon() {
-  let x= 380
-  let y = 280
   if (imagePokemondraw) {
     strokeWeight(3)
     stroke(255)
     fill(255)
     rect(20, 200, 400, 300)
     fill(0)
-    rect(30, 210, x, y)
-    if(imagePokemondraw.width > 180){
-      image(imagePokemondraw, 70, 250,imagePokemondraw.width/2, imagePokemondraw.height/2)     //Affichage du pokemon sans erreur quand rien dans la variable
-    } else if (imagePokemondraw.height>200){
-      image(imagePokemondraw, 70, 250,imagePokemondraw.width/3, imagePokemondraw.height/3)  
-    } else{
-      image(imagePokemondraw, 70, 250)     //Affichage du pokemon sans erreur quand rien dans la variable
-    }
+    rect(30, 210, 380, 280)
+    image(imagePokemondraw, 
+      220 - (imagePokemondraw.width/2)/2, 350 -((imagePokemondraw.height/2)/2),
+      imagePokemondraw.width/2, imagePokemondraw.height/2)     //Affichage du pokemon sans erreur quand rien dans la variable
   }
 }
 
