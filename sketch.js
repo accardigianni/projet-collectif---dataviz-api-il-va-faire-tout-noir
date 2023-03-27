@@ -246,8 +246,6 @@ function drawTram() {
   image(imgTram, xImgTram2, yImgTram1 - 100, imgTram.width / 2, imgTram.height / 2)       //Image du tram en mouvement
   image(imgArret, 600, yImgTram1 - 90, 350, 175, 20)
   image(imgAda, 713, 568, 28, 34)
-  image(imgArret, 600, yImgTram1 - 200, 350, 175, 20)
-  image(imgAda, 713, 568 - 110, 28, 34)
   xRail = 0
   for (let i = 0; i < 35; i++) {
     image(imgRail, xRail, 650, 50, 50)      //Rail du bas
@@ -269,13 +267,13 @@ function drawNameArret() {
   stroke(0)
   strokeWeight(4)
   fill(0, 200, 0)               //Cadre vert derriere le nom de l'arret
-  //rect(662, 455, 172, 55)
-  rect(662, 355, 172, 55)
+  rect(662, 455, 172, 55)
+  // rect(662, 355, 172, 55)
   noStroke()
   textSize(25)
   fill(0, 0, 0)                 //Nom arret dans le cadre
-  //text("Moutonnerie", 680, 490)
-  text("Moutonnerie", 680, 390)
+  text("Moutonnerie", 680, 490)
+  // text("Moutonnerie", 680, 390)
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
