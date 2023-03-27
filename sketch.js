@@ -141,8 +141,8 @@ async function reseauTan() {
   direction1 = tram[0].terminus             //Stockage donnnée API dans variable globale
   passage2 = tram[1].temps
   direction2 = tram[1].terminus
-  console.log(passage1 + " vers " + direction1)
-  console.log(passage2 + " vers " + direction2)
+  //console.log(passage1 + " vers " + direction1)
+  //console.log(passage2 + " vers " + direction2)
   setTimeout(reseauTan, 10000)        //Ré-execution toutes les 10sec
 }
 
@@ -164,6 +164,8 @@ function drawTram() {
       buffer = 0
     }
   }
+
+
 
   //Rail autour arret de tram
   let xRail = 0                 //Coordonée de base du premier rail
