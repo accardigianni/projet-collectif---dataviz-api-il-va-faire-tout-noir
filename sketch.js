@@ -8,6 +8,7 @@
 
 //déclaration variable globale
 let cx, cy, dx, dy;     //variable pour les differentes horloges
+let code = "vide"
 
 
 //Horloge
@@ -134,8 +135,21 @@ function drawPokemon() {
 //------------------------------------------------------------------------------------------------------------------------------------------------
 //Tram et Arret
 
-async function reseauTan() {
-  const response = await fetch('https://open.tan.fr/ewp/tempsattente.json/MOUT')    //Appel API Tan
+navigator.geolocation.getCurrentPosition(position => {
+  const { latitude, longitude } = position.coords;
+  tanPos(latitude, longitude)
+  // Show a map centered at latitude / longitude.
+});
+
+async function tanPos(latitude, longitude) {
+  const response = await fetch(`https://open.tan.fr/ewp/arrets.json/${latitude}/${longitude}`)
+  const pos = await response.json()
+  code = pos[0].codeLieu
+  reseauTan(code)
+}
+
+async function reseauTan(code) {
+  const response = await fetch(`https://open.tan.fr/ewp/tempsattente.json/${code}`)    //Appel API Tan
   const tram = await response.json()        //Traduction pour comprehension de la reponse
   console.log(tram)
 
@@ -157,7 +171,7 @@ async function reseauTan() {
   }
   console.log(passage1 + " vers " + direction1)
   console.log(passage2 + " vers " + direction2)
-  setTimeout(reseauTan, 5000)        //Ré-execution toutes les 10sec
+  setTimeout(reseauTan, 5000, code)        //Ré-execution toutes les 10sec
 }
 
 
@@ -290,7 +304,6 @@ function setup() {
   buttonPokemon()
 }
 
-
 function draw() {             //Execution 60 fois par seconde
   background(255);
   drawClock()
@@ -301,9 +314,4 @@ function draw() {             //Execution 60 fois par seconde
   drawTram()
   drawTitle()
   drawPokemon()
-
 }
-
-//Appels en dehors de draw() pour eviter l'execution 60 fois par seconde
-
-reseauTan()
