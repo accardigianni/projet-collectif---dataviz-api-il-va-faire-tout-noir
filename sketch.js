@@ -27,7 +27,8 @@ let imagePokemondraw    //Fait appel a l'API pokemon
 
 
 //Coordonée mobile du tram
-let xImgTram = 0
+let xImgTram1 = 0
+let xImgTram2 = 0
 
 
 //Récuperation donnée API Tan
@@ -38,7 +39,8 @@ let direction2 = "Vide"
 
 
 //Confition pour le tram qui repart
-let buffer = 0
+let buffer1 = 0
+let buffer2 = 0
 
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
@@ -72,7 +74,9 @@ function drawDigitalClock() {
 function drawClock() {
   // Draw the clock background
   noStroke();
-  image(imgClock, cx - 85, cy - 87, imgClock.width / 2, imgClock.height / 2)
+  image(imgAdaHorloge, cx - 91, cy - 97, 174, 193)
+  image(imgClock, cx - 91, cy - 87, imgClock.width / 2, imgClock.height / 2)
+
 
   // Angles for sin() and cos() start at 3 o'clock;
   // subtract HALF_PI to make them start at the top
@@ -81,7 +85,7 @@ function drawClock() {
   let h = map(hour() + norm(minute(), 0, 60), 0, 24, 0, TWO_PI * 2) - HALF_PI;
 
   // Draw the hands of the clock
-  stroke(0, 200, 0);
+  stroke(0);
   strokeWeight(1);
   line(cx, cy, cx + cos(s) * secondsRadius, cy + sin(s) * secondsRadius);
   strokeWeight(2);
@@ -153,33 +157,64 @@ function drawPokemon() {
 async function reseauTan() {
   const response = await fetch('https://open.tan.fr/ewp/tempsattente.json/MOUT')    //Appel API Tan
   const tram = await response.json()        //Traduction pour comprehension de la reponse
-  passage1 = tram[0].temps
-  direction1 = tram[0].terminus             //Stockage donnnée API dans variable globale
-  passage2 = tram[1].temps
-  direction2 = tram[1].terminus
+  console.log(tram)
+
+  let buf1 = false
+  let buf2 = false
+  for (const data of tram) {
+    if (data.sens == 1 && !buf1) {
+      passage2 = data.temps
+      direction2 = data.terminus
+      buf1 = true
+    } else if (data.sens == 2 && !buf2) {
+      passage1 = data.temps
+      direction1 = data.terminus
+      buf2 = true
+    }
+    if (buf1 == true && buf2 == true) {
+      break
+    }
+  }
   console.log(passage1 + " vers " + direction1)
   console.log(passage2 + " vers " + direction2)
-  setTimeout(reseauTan, 10000)        //Ré-execution toutes les 10sec
+  setTimeout(reseauTan, 5000)        //Ré-execution toutes les 10sec
 }
 
 
 function drawTram() {
-  let yImgTram = 600          //Position Y fixe
-  if (passage1 != "proche" && !buffer) {
-    xImgTram = -600
+  let yImgTram1 = 600          //Position Y fixe  
+  if (passage1 != "proche" && !buffer1) {
+    xImgTram1 = -600
   } else if (passage1 == "proche") {
-    xImgTram += 5
-    if (xImgTram > 570) {             //Premier mouvement du tramway jusqu'a l'arret
-      buffer = 1
-      xImgTram = 570
+    xImgTram1 += 5
+    if (xImgTram1 > 570) {             //Premier mouvement du tramway jusqu'a l'arret
+      buffer1 = 1
+      xImgTram1 = 570
     }
-  } else if (passage1 != "proche" && buffer) {
-    xImgTram += 5
-    if (xImgTram == 2500) {           //Départ tramway de l'arret
-      xImgTram = -600
-      buffer = 0
+  } else if (passage1 != "proche" && buffer1) {
+    xImgTram1 += 5
+    if (xImgTram1 == 2000) {           //Départ tramway de l'arret
+      xImgTram1 = -600
+      buffer1 = 0
     }
   }
+  if (passage2 != "proche" && !buffer2) {
+    xImgTram2 = 1700
+  } else if (passage2 == "proche") {
+    xImgTram2 -= 5
+    if (xImgTram2 < 570) {             //Premier mouvement du tramway jusqu'a l'arret
+      buffer2 = 1
+      xImgTram2 = 570
+    }
+  } else if (passage2 != "proche" && buffer2) {
+    xImgTram2 -= 5
+    if (xImgTram2 == -600) {           //Départ tramway de l'arret
+      xImgTram2 = 1700
+      buffer2 = 0
+    }
+  }
+
+
 
   //Rail autour arret de tram
   let xRail = 0                 //Coordonée de base du premier rail
@@ -187,7 +222,8 @@ function drawTram() {
     image(imgRail, xRail, 550, 50, 50)      //Rail du haut
     xRail += 50
   }
-  image(imgArret, 600, yImgTram - 90, 350, 175, 20)
+  image(imgTram, xImgTram2, yImgTram1 - 100, imgTram.width / 2, imgTram.height / 2)       //Image du tram en mouvement
+  image(imgArret, 600, yImgTram1 - 90, 350, 175, 20)
   image(imgAda, 713, 568, 28, 34)
   xRail = 0
   for (let i = 0; i < 35; i++) {
@@ -195,15 +231,15 @@ function drawTram() {
     xRail += 50
   }
 
-  image(imgTram, xImgTram, yImgTram, imgTram.width / 2, imgTram.height / 2)       //Image du tram en mouvement
+  image(imgTram, xImgTram1, yImgTram1, imgTram.width / 2, imgTram.height / 2)       //Image du tram en mouvement
 }
 
 function drawWait() {
-  textSize(13)
+  textSize(17)
   noStroke()
   fill(0)                       //Affichage temps attente
-  text("  " + passage1 + "\n" + "  vers" + "\n" + direction1, 600, 495)
-  text(" " + passage2 + "\n" + "  vers" + "\n" + direction2, 850, 495)
+  text(passage1 + " vers " + direction1, 30, 640)
+  text(passage2 + " vers " + direction2, 1250, 530)
 }
 
 function drawNameArret() {
@@ -269,6 +305,7 @@ function setup() {
   imgAda = loadImage('./Img/ada.jpg')
   imgClock = loadImage('./Img/horloge.png')
   imgRail = loadImage('./Img/rail1.png')
+  imgAdaHorloge = loadImage('./Img/adaRond.png')
 
   //appel du button
   buttonPokemon()
@@ -280,9 +317,9 @@ function draw() {             //Execution 60 fois par seconde
   drawClock()
   drawDigitalClock()
   drawNameArret()
+  drawWait()
   drawTram()
   drawTitle()
-  drawWait()
   drawPokemon()
 }
 
