@@ -42,6 +42,11 @@ let direction2 = "Vide"
 let buffer1 = 0
 let buffer2 = 0
 
+// coordonnées
+let latitude
+let longitude
+let coord
+let codeArret
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------Déclaration des fonctions------------------------------------------------------------------------
@@ -75,7 +80,7 @@ function drawDigitalClock() {
 function drawClock() {
   // Draw the clock background
   noStroke();
-  image(imgClock, cx - 85, cy - 87, imgClock.width / 2, imgClock.height / 2)
+  image(imgClock, cx - 91, cy - 87, imgClock.width / 2, imgClock.height / 2)
 
   // Angles for sin() and cos() start at 3 o'clock;
   // subtract HALF_PI to make them start at the top
@@ -114,10 +119,9 @@ function buttonPokemon() {
 const changePokemon = async () => {  //Fonction fléchée
   let randomNumber = Math.ceil(Math.random() * 150) + 1   // .random=> nombre [0, 149,99] + .ceil => plafone la valeur entière au dessus
   let requestString = `https://pokeapi.co/api/v2/pokemon/${randomNumber}`;// on fait +1 a la fin pour éviter le 0(no pokemon)
-
   let data = await fetch(requestString)         //Appel API
   let dataOK = await data.json()                //Reponse traduite en Json
-  let imagePokemon = dataOK.sprites.other.dream_world.front_default     //Récuperation avec chemin d'acces dans l'objet pour l'image
+  let imagePokemon = dataOK.sprites.other.official_artwork.front_default     //Récuperation avec chemin d'acces dans l'objet pour l'image
   //renvoie l'image
   imagePokemondraw = loadImage(imagePokemon)      //Chargement image
 }
@@ -132,8 +136,9 @@ function drawPokemon() {
 //------------------------------------------------------------------------------------------------------------------------------------------------
 //Tram et Arret
 
-async function reseauTan() {
-  const response = await fetch('https://open.tan.fr/ewp/tempsattente.json/MOUT')    //Appel API Tan
+async function reseauTan(code) {
+  console.log(code);
+  const response = await fetch(`https://open.tan.fr/ewp/tempsattente.json/${code}`)    //Appel API Tan
   const tram = await response.json()        //Traduction pour comprehension de la reponse
   console.log(tram)
 
@@ -153,10 +158,29 @@ async function reseauTan() {
       break
     }
   }
-  console.log(passage1 + " vers " + direction1)
-  console.log(passage2 + " vers " + direction2)
-  setTimeout(reseauTan, 5000)        //Ré-execution toutes les 10sec
+  //console.log(passage1 + " vers " + direction1)
+  //console.log(passage2 + " vers " + direction2)
+  setTimeout(reseauTan, 5000, code)        //Ré-execution toutes les 10sec
 }
+navigator.geolocation.getCurrentPosition(position => {
+  latitude = position.coords.latitude;
+  longitude = position.coords.longitude
+  tanCoords(latitude, longitude)
+  //   // Show a map centered at latitude / longitude.
+});
+
+async function tanCoords(latitude, longitude) {
+  const response = await fetch(`https:open.tan.fr/ewp/arrets.json/${latitude}/${longitude}`)
+  const data = await response.json()
+  console.log(latitude);
+  console.log(longitude);
+  console.log(data);
+  codeArret = data[0].codeLieu
+  console.log(codeArret);
+  console.log(reseauTan(codeArret));
+
+}
+
 
 
 function drawTram() {
@@ -191,6 +215,8 @@ function drawTram() {
       buffer2 = 0
     }
   }
+
+
 
 
 
@@ -256,6 +282,11 @@ function drawTitle() {
 //-------------------------------------------------------Fonctions natives P5.JS
 //------------------------------------------------------------------------------------------------------------------------------------------------
 
+
+
+
+
+
 function setup() {
   //création zone dessin sur toute la page
   createCanvas(windowWidth, windowHeight);          //Création feuille de dessin
@@ -285,6 +316,7 @@ function setup() {
 
   //appel du button
   buttonPokemon()
+
 }
 
 
@@ -302,5 +334,3 @@ function draw() {             //Execution 60 fois par seconde
 }
 
 //Appels en dehors de draw() pour eviter l'execution 60 fois par seconde
-
-reseauTan()
