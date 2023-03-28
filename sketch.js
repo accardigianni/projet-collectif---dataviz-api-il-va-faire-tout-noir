@@ -37,7 +37,7 @@ let passage1 = "Vide"
 let direction1 = "Vide"
 let passage2 = "Vide"
 let direction2 = "Vide"
-let NameArret = "Vide"
+let nameArret = "Vide"
 
 
 //Confition pour le tram qui repart
@@ -107,10 +107,10 @@ function closure() {
   let closureTime = (new Date('Janvier 1, 1970 17:00:00')).getTime()
   let nowTime = (new Date()).getTime()
   deltaClosure = new Date(closureTime - nowTime)
-  if(closureTime-nowTime > 0){
+  if (closureTime - nowTime > 0) {
     if (deltaClosure.getHours() < 8) {
       text("Cloture dans " +
-        (deltaClosure.getHours()-1) + "h" +
+        (deltaClosure.getHours() - 1) + "h" +
         (deltaClosure.getMinutes()) + "m" +
         (deltaClosure.getSeconds()) + "s", 70, 75)
     }
@@ -121,13 +121,13 @@ function closure() {
 function launch() {
   let launchTime = (new Date('Janvier 1, 1970 9:30:00')).getTime()
   let nowTime = (new Date()).getTime()
-  if ((nowTime-launchTime)<0) {
+  if ((nowTime - launchTime) < 0) {
     deltaLaunch = new Date(launchTime - nowTime)
-    if (deltaLaunch.getHours()<4) {
+    if (deltaLaunch.getHours() < 4) {
       text("Lancement dans " +
-      (deltaLaunch.getHours()) + "h" +
-      (deltaLaunch.getMinutes()) + "m" +
-      (deltaLaunch.getSeconds()) + "s", 70, 75)
+        (deltaLaunch.getHours()) + "h" +
+        (deltaLaunch.getMinutes()) + "m" +
+        (deltaLaunch.getSeconds()) + "s", 70, 75)
     }
   }
 }
@@ -182,7 +182,7 @@ async function tanPos(latitude, longitude) {
   const pos = await response.json()
   code = pos[0].codeLieu
   console.log(pos);
-  namearret = pos[0].libelle
+  nameArret = pos[0].libelle
   console.log(namearret)
   reseauTan(code)
 }
@@ -286,7 +286,7 @@ function drawNameArret() {
   noStroke()
   textSize(25)
   fill(0, 0, 0)                 //Nom arret dans le cadre
-  text("Moutonnerie", 680, 490)
+  text(namearret, 680, 490)
   // text("Moutonnerie", 680, 390)
 }
 
