@@ -39,6 +39,8 @@ let passage2 = "Vide"
 let direction2 = "Vide"
 let name1 = "vide"
 let name2 = "vide"
+let distance1 = "vide"
+let distance2 = "vide"
 
 //Confition pour le tram qui repart
 let buffer1 = 0
@@ -182,9 +184,10 @@ async function tanPos(latitude, longitude) {
   const pos = await response.json()
   code = pos[0].codeLieu
   name1 = pos[0].libelle
+  distance1 = pos[0].distance
   name2 = pos[1].libelle
+  distance2 = pos[1].distance
   console.log(pos);
-
   reseauTan(code)
 }
 
@@ -214,11 +217,11 @@ async function reseauTan(code) {
 }
 
 function drawCloseArret() {
-  textSize(25)
   noStroke()
-  fill(150,0,0)
-  text("arret le plus proche " + name1, 500, 25)
-
+  fill(150, 0, 0)
+  textSize(25)
+  text("Arrêt le plus proche : " + name1 + " à " + distance1, 550, 35)
+  text("2eme arrêt le plus proche : " + name2 + " à " + distance2, 550, 65)
 }
 
 
@@ -278,7 +281,7 @@ function drawWait() {
   noStroke()
   fill(0)                       //Affichage temps attente
   text(passage1 + " vers " + direction1, 30, 640)
-  text(passage2 + " vers " + direction2, 1250, 530)
+  text(passage2 + " vers " + direction2, 1200, 530)
 }
 
 function drawNameArret() {
@@ -286,12 +289,10 @@ function drawNameArret() {
   strokeWeight(4)
   fill(0, 200, 0)               //Cadre vert derriere le nom de l'arret
   rect(662, 455, 172, 55)
-  // rect(662, 355, 172, 55)
   noStroke()
   textSize(25)
   fill(0, 0, 0)                 //Nom arret dans le cadre
   text("Moutonnerie", 680, 490)
-  // text("Moutonnerie", 680, 390)
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
