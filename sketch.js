@@ -184,7 +184,7 @@ async function tanPos(latitude, longitude) {
   name1 = pos[0].libelle
   name2 = pos[1].libelle
   console.log(pos);
-  console.log(nameArret)
+
   reseauTan(code)
 }
 
@@ -214,7 +214,11 @@ async function reseauTan(code) {
 }
 
 function drawCloseArret() {
-  text(name1, 200, 200)
+  textSize(25)
+  noStroke()
+  fill(150,0,0)
+  text("arret le plus proche " + name1, 500, 25)
+
 }
 
 
