@@ -8,7 +8,8 @@
 
 //déclaration variable globale
 let cx, cy, dx, dy;     //variable pour les differentes horloges
-let code = "vide"
+let code1 = "vide"
+let code2 = "vide"
 
 
 //Horloge
@@ -25,6 +26,7 @@ let imgRail
 let imgArret
 let imgClock;
 let imagePokemondraw    //Fait appel a l'API pokemon
+let namePokemon
 
 
 //Coordonée mobile du tram
@@ -63,7 +65,7 @@ function drawDigitalClock() {
   textSize(40)
   strokeWeight(2);      //Mise en page
   stroke(0)
-  fill(0, 200, 0)
+  fill(49, 170, 78)
 
   let dHour = hour();
   let dMin = minute();      //Stockage fonctions native P5 pour l'heure
@@ -108,16 +110,17 @@ console.log(new Date())
 //Set the closure time, compare to now and print it, whent relevent, called in drawTitle()
 function closure() {
   let closureTime = (new Date('Janvier 1, 1970 17:00:00')).getTime()
-  let nowTime = new Date().getTime()
+  let nowTime = (new Date()).getTime()
   deltaClosure = new Date(closureTime - nowTime)
   if (deltaClosure.getHours() < 8) {
+    fill(231, 75, 52)
     text("Cloture dans " +
       (deltaClosure.getHours() - 1) + "h" +
       (deltaClosure.getMinutes()) + "m" +
       (deltaClosure.getSeconds()) + "s", 70, 75)
   }
 }
-console.log(deltaClosure)
+
 //Set the launch time, compare to now and print it, when relevent, called in drawTitle()
 function launch() {
   let launchTime = (new Date('Janvier 1, 1970 9:30:00')).getTime()
@@ -125,6 +128,7 @@ function launch() {
   if ((nowTime - launchTime) < 0) {
     deltaLaunch = new Date(launchTime - nowTime)
     if (deltaLaunch.getHours() < 4) {
+      fill(231, 75, 52)
       text("Lancement dans " +
         (deltaLaunch.getHours()) + "h" +
         (deltaLaunch.getMinutes()) + "m" +
@@ -150,6 +154,7 @@ const changePokemon = async () => {  //Fonction fléchée
   let data = await fetch(requestString)         //Appel API
   let dataOK = await data.json()                //Reponse traduite en Json
   let imagePokemon = dataOK.sprites.other.dream_world.front_default     //Récuperation avec chemin d'acces dans l'objet pour l'image
+  namePokemon = dataOK.name
   //renvoie l'image
   imagePokemondraw = loadImage(imagePokemon)      //Chargement image
 }
@@ -158,13 +163,16 @@ function drawPokemon() {
   if (imagePokemondraw) {
     strokeWeight(3)
     stroke(255)
-    fill(255)
+    fill(238, 199, 202)
     rect(20, 200, 400, 300)
     fill(0)
     rect(30, 210, 380, 280)
     image(imagePokemondraw,
       220 - (imagePokemondraw.width / 2) / 2, 350 - ((imagePokemondraw.height / 2) / 2),
       imagePokemondraw.width / 2, imagePokemondraw.height / 2)     //Affichage du pokemon sans erreur quand rien dans la variable
+    fill(231, 75, 52)
+    noStroke()
+    text(namePokemon, 40, 470)
   }
 }
 
@@ -175,27 +183,24 @@ function drawPokemon() {
 navigator.geolocation.getCurrentPosition(position => {
   const { latitude, longitude } = position.coords;
   tanPos(latitude, longitude)
-  // Show a map centered at latitude / longitude.
 });
 
 async function tanPos(latitude, longitude) {
   const response = await fetch(`https://open.tan.fr/ewp/arrets.json/${latitude}/${longitude}`)
   const pos = await response.json()
-  code = pos[0].codeLieu
-  console.log(code)
+  code1 = pos[0].codeLieu
   name1 = pos[0].libelle
-  arret = name1
   distance1 = pos[0].distance
+  code2 = pos[1].codeLieu
   name2 = pos[1].libelle
   distance2 = pos[1].distance
   console.log(pos);
-  reseauTan(code)
+  reseauTan(code1)
 }
 
 async function reseauTan(code) {
   const response = await fetch(`https://open.tan.fr/ewp/tempsattente.json/${code}`)    //Appel API Tan
   const tram = await response.json()        //Traduction pour comprehension de la reponse
-  createList()
   console.log(tram)
   let buf1 = false
   let buf2 = false
@@ -215,28 +220,22 @@ async function reseauTan(code) {
   }
   console.log(passage1 + " vers " + direction1)
   console.log(passage2 + " vers " + direction2)
-  setTimeout(reseauTan, 5000, code)        //Ré-execution toutes les 10sec
+  setTimeout(reseauTan, 5000, code)        //Ré-execution toutes les 5sec
 }
 
 function drawCloseArret() {
+  textFont('Helvetica');
   noStroke()
-  fill(150, 0, 0)
-  textSize(25)                //Affichage des arrets les plus proche
-  text("Arrêt le plus proche : " + name1 + " à " + distance1, 550, 35)
-  text("2eme arrêt le plus proche : " + name2 + " à " + distance2, 550, 65)
-}
-
-function createList() {
-  sel = createSelect();
-  sel.position(440, 35);
-  sel.option(name1);
-  sel.option(name2);
-  sel.changed(changeArret);
-}
-
-function changeArret() {
-  arret = sel.value()
-  console.log(arret);
+  fill(49, 170, 78)
+  textSize(25)
+  stroke(0)
+  strokeWeight(4)
+  rect(662 - (172 / 2), 200, (2 * 172), 110)              //Affichage des arrets les plus proche
+  fill(0)
+  noStroke()
+  text("Arrêts les plus proches ", 595, 235)
+  text("=> " + name1 + " à " + distance1, 595, 265)
+  text("=> " + name2 + " à " + distance2, 595, 295)
 }
 
 
@@ -302,12 +301,12 @@ function drawWait() {
 function drawNameArret() {
   stroke(0)
   strokeWeight(4)
-  fill(0, 200, 0)               //Cadre vert derriere le nom de l'arret
+  fill(49, 170, 78)              //Cadre vert derriere le nom de l'arret
   rect(662, 455, 172, 55)
   noStroke()
   textSize(25)
   fill(0, 0, 0)                 //Nom arret dans le cadre
-  text(arret, 680, 490)
+  text(name1, 680, 490)
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
@@ -315,7 +314,7 @@ function drawNameArret() {
 //Titre de la page
 
 function drawTitle() {
-  fill(0, 200, 0)
+  fill(231, 75, 52)
   textSize(40)
   textFont('Helvetica');      //Police d'écriture
   stroke(3)
@@ -328,6 +327,7 @@ function drawTitle() {
   launch()
   if (deltaClosure.getHours() == 0 || deltaClosure.getHours() > 8) { //peut-etre rajouetr des conditions pour les minutes si on veut se prendre la tete)
     textSize(30)
+    fill(231, 75, 52)
     text("Time to get away !", 70, 110)
   }
 }
@@ -336,6 +336,10 @@ function drawTitle() {
 //------------------------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------Fonctions natives P5.JS
 //------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
 
 
 function setup() {
@@ -368,6 +372,7 @@ function setup() {
 
   //appel du button
   buttonPokemon()
+
 }
 
 function draw() {             //Execution 60 fois par seconde
