@@ -41,6 +41,8 @@ let name1 = "vide"
 let name2 = "vide"
 let distance1 = "vide"
 let distance2 = "vide"
+let arret = "vide"
+let sel
 
 //Confition pour le tram qui repart
 let buffer1 = 0
@@ -85,7 +87,6 @@ function drawClock() {
   noStroke();
   image(imgAdaHorloge, cx - 91, cy - 97, 174, 193)
   image(imgClock, cx - 91, cy - 87, imgClock.width / 2, imgClock.height / 2)
-
 
   // Angles for sin() and cos() start at 3 o'clock;
   // subtract HALF_PI to make them start at the top
@@ -184,6 +185,7 @@ async function tanPos(latitude, longitude) {
   const pos = await response.json()
   code = pos[0].codeLieu
   name1 = pos[0].libelle
+  arret = name1
   distance1 = pos[0].distance
   name2 = pos[1].libelle
   distance2 = pos[1].distance
@@ -194,6 +196,7 @@ async function tanPos(latitude, longitude) {
 async function reseauTan(code) {
   const response = await fetch(`https://open.tan.fr/ewp/tempsattente.json/${code}`)    //Appel API Tan
   const tram = await response.json()        //Traduction pour comprehension de la reponse
+  createList()
   console.log(tram)
   let buf1 = false
   let buf2 = false
@@ -222,6 +225,18 @@ function drawCloseArret() {
   textSize(25)                //Affichage des arrets les plus proche
   text("Arrêt le plus proche : " + name1 + " à " + distance1, 550, 35)
   text("2eme arrêt le plus proche : " + name2 + " à " + distance2, 550, 65)
+}
+
+function createList() {
+  sel = createSelect();
+  sel.position(440, 35);
+  sel.option(name1);
+  sel.option(name2);
+  sel.changed(changeArret);
+}
+
+function changeArret() {
+  arret = sel.value()
 }
 
 
@@ -292,7 +307,7 @@ function drawNameArret() {
   noStroke()
   textSize(25)
   fill(0, 0, 0)                 //Nom arret dans le cadre
-  text(name1, 680, 490)
+  text(arret, 680, 490)
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
