@@ -111,13 +111,11 @@ function closure() {
   let closureTime = (new Date('Janvier 1, 1970 17:00:00')).getTime()
   let nowTime = (new Date()).getTime()
   deltaClosure = new Date(closureTime - nowTime)
-  if (closureTime - nowTime > 0) {
-    if (deltaClosure.getHours() < 8) {
-      text("Cloture dans " +
-        (deltaClosure.getHours() - 1) + "h" +
-        (deltaClosure.getMinutes()) + "m" +
-        (deltaClosure.getSeconds()) + "s", 70, 75)
-    }
+  if (deltaClosure.getHours() < 8) {
+    text("Cloture dans " +
+      (deltaClosure.getHours() - 1) + "h" +
+      (deltaClosure.getMinutes()) + "m" +
+      (deltaClosure.getSeconds()) + "s", 70, 75)
   }
 }
 
