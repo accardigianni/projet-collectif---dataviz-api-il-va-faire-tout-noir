@@ -105,18 +105,16 @@ console.log(new Date())
 //Set the closure time, compare to now and print it, whent relevent, called in drawTitle()
 function closure() {
   let closureTime = (new Date('Janvier 1, 1970 17:00:00')).getTime()
-  let nowTime = (new Date()).getTime()
+  let nowTime = new Date().getTime()
   deltaClosure = new Date(closureTime - nowTime)
-  if (closureTime - nowTime > 0) {
-    if (deltaClosure.getHours() < 8) {
-      text("Cloture dans " +
-        (deltaClosure.getHours() - 1) + "h" +
-        (deltaClosure.getMinutes()) + "m" +
-        (deltaClosure.getSeconds()) + "s", 70, 75)
-    }
+  if (deltaClosure.getHours() < 8) {
+    text("Cloture dans " +
+      (deltaClosure.getHours() - 1) + "h" +
+      (deltaClosure.getMinutes()) + "m" +
+      (deltaClosure.getSeconds()) + "s", 70, 75)
   }
 }
-
+console.log(deltaClosure)
 //Set the launch time, compare to now and print it, when relevent, called in drawTitle()
 function launch() {
   let launchTime = (new Date('Janvier 1, 1970 9:30:00')).getTime()
@@ -184,7 +182,6 @@ async function tanPos(latitude, longitude) {
   name1 = pos[0].libelle
   name2 = pos[1].libelle
   console.log(pos);
-  console.log(nameArret)
   reseauTan(code)
 }
 
