@@ -217,7 +217,7 @@ async function reseauTan(code) {
 function drawCloseArret() {
   noStroke()
   fill(150, 0, 0)
-  textSize(25)
+  textSize(25)                //Affichage des arrets les plus proche
   text("Arrêt le plus proche : " + name1 + " à " + distance1, 550, 35)
   text("2eme arrêt le plus proche : " + name2 + " à " + distance2, 550, 65)
 }
