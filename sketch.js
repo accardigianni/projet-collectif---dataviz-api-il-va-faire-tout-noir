@@ -37,8 +37,8 @@ let passage1 = "Vide"
 let direction1 = "Vide"
 let passage2 = "Vide"
 let direction2 = "Vide"
-let NameArret = "Vide"
-
+let name1 = "vide"
+let name2 = "vide"
 
 //Confition pour le tram qui repart
 let buffer1 = 0
@@ -107,10 +107,10 @@ function closure() {
   let closureTime = (new Date('Janvier 1, 1970 17:00:00')).getTime()
   let nowTime = (new Date()).getTime()
   deltaClosure = new Date(closureTime - nowTime)
-  if(closureTime-nowTime > 0){
+  if (closureTime - nowTime > 0) {
     if (deltaClosure.getHours() < 8) {
       text("Cloture dans " +
-        (deltaClosure.getHours()-1) + "h" +
+        (deltaClosure.getHours() - 1) + "h" +
         (deltaClosure.getMinutes()) + "m" +
         (deltaClosure.getSeconds()) + "s", 70, 75)
     }
@@ -121,13 +121,13 @@ function closure() {
 function launch() {
   let launchTime = (new Date('Janvier 1, 1970 9:30:00')).getTime()
   let nowTime = (new Date()).getTime()
-  if ((nowTime-launchTime)<0) {
+  if ((nowTime - launchTime) < 0) {
     deltaLaunch = new Date(launchTime - nowTime)
-    if (deltaLaunch.getHours()<4) {
+    if (deltaLaunch.getHours() < 4) {
       text("Lancement dans " +
-      (deltaLaunch.getHours()) + "h" +
-      (deltaLaunch.getMinutes()) + "m" +
-      (deltaLaunch.getSeconds()) + "s", 70, 75)
+        (deltaLaunch.getHours()) + "h" +
+        (deltaLaunch.getMinutes()) + "m" +
+        (deltaLaunch.getSeconds()) + "s", 70, 75)
     }
   }
 }
@@ -181,9 +181,10 @@ async function tanPos(latitude, longitude) {
   const response = await fetch(`https://open.tan.fr/ewp/arrets.json/${latitude}/${longitude}`)
   const pos = await response.json()
   code = pos[0].codeLieu
+  name1 = pos[0].libelle
+  name2 = pos[1].libelle
   console.log(pos);
-  namearret = pos[0].libelle
-  console.log(namearret)
+  console.log(nameArret)
   reseauTan(code)
 }
 
@@ -212,6 +213,9 @@ async function reseauTan(code) {
   setTimeout(reseauTan, 5000, code)        //Ré-execution toutes les 10sec
 }
 
+function drawCloseArret() {
+  text(name1, 200, 200)
+}
 
 
 function drawTram() {
@@ -246,10 +250,6 @@ function drawTram() {
       buffer2 = 0
     }
   }
-
-
-
-
 
   //Rail autour arret de tram
   let xRail = 0                 //Coordonée de base du premier rail
@@ -359,6 +359,7 @@ function draw() {             //Execution 60 fois par seconde
   background(221, 249, 189);
   drawClock()
   drawDigitalClock()
+  drawCloseArret()
   drawNameArret()
   drawWait()
   drawTram()
