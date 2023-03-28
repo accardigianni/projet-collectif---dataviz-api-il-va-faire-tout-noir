@@ -182,6 +182,7 @@ async function tanPos(latitude, longitude) {
   const response = await fetch(`https://open.tan.fr/ewp/arrets.json/${latitude}/${longitude}`)
   const pos = await response.json()
   code = pos[0].codeLieu
+  console.log(code)
   name1 = pos[0].libelle
   arret = name1
   distance1 = pos[0].distance
@@ -235,6 +236,7 @@ function createList() {
 
 function changeArret() {
   arret = sel.value()
+  console.log(arret);
 }
 
 
