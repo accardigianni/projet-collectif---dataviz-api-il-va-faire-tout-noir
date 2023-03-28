@@ -8,7 +8,8 @@
 
 //déclaration variable globale
 let cx, cy, dx, dy;     //variable pour les differentes horloges
-let code = "vide"
+let code1 = "vide"
+let code2 = "vide"
 
 
 //Horloge
@@ -108,16 +109,18 @@ console.log(new Date())
 //Set the closure time, compare to now and print it, whent relevent, called in drawTitle()
 function closure() {
   let closureTime = (new Date('Janvier 1, 1970 17:00:00')).getTime()
-  let nowTime = new Date().getTime()
+  let nowTime = (new Date()).getTime()
   deltaClosure = new Date(closureTime - nowTime)
-  if (deltaClosure.getHours() < 8) {
-    text("Cloture dans " +
-      (deltaClosure.getHours() - 1) + "h" +
-      (deltaClosure.getMinutes()) + "m" +
-      (deltaClosure.getSeconds()) + "s", 70, 75)
+  if (closureTime - nowTime > 0) {
+    if (deltaClosure.getHours() < 8) {
+      text("Cloture dans " +
+        (deltaClosure.getHours() - 1) + "h" +
+        (deltaClosure.getMinutes()) + "m" +
+        (deltaClosure.getSeconds()) + "s", 70, 75)
+    }
   }
 }
-console.log(deltaClosure)
+
 //Set the launch time, compare to now and print it, when relevent, called in drawTitle()
 function launch() {
   let launchTime = (new Date('Janvier 1, 1970 9:30:00')).getTime()
@@ -175,26 +178,24 @@ function drawPokemon() {
 navigator.geolocation.getCurrentPosition(position => {
   const { latitude, longitude } = position.coords;
   tanPos(latitude, longitude)
-  // Show a map centered at latitude / longitude.
 });
 
 async function tanPos(latitude, longitude) {
   const response = await fetch(`https://open.tan.fr/ewp/arrets.json/${latitude}/${longitude}`)
   const pos = await response.json()
-  code = pos[0].codeLieu
+  code1 = pos[0].codeLieu
   name1 = pos[0].libelle
-  arret = name1
   distance1 = pos[0].distance
+  code2 = pos[1].codeLieu
   name2 = pos[1].libelle
   distance2 = pos[1].distance
   console.log(pos);
-  reseauTan(code)
+  reseauTan(code1)
 }
 
 async function reseauTan(code) {
   const response = await fetch(`https://open.tan.fr/ewp/tempsattente.json/${code}`)    //Appel API Tan
   const tram = await response.json()        //Traduction pour comprehension de la reponse
-  createList()
   console.log(tram)
   let buf1 = false
   let buf2 = false
@@ -214,7 +215,7 @@ async function reseauTan(code) {
   }
   console.log(passage1 + " vers " + direction1)
   console.log(passage2 + " vers " + direction2)
-  setTimeout(reseauTan, 5000, code)        //Ré-execution toutes les 10sec
+  setTimeout(reseauTan, 5000, code)        //Ré-execution toutes les 5sec
 }
 
 function drawCloseArret() {
@@ -223,18 +224,6 @@ function drawCloseArret() {
   textSize(25)                //Affichage des arrets les plus proche
   text("Arrêt le plus proche : " + name1 + " à " + distance1, 550, 35)
   text("2eme arrêt le plus proche : " + name2 + " à " + distance2, 550, 65)
-}
-
-function createList() {
-  sel = createSelect();
-  sel.position(440, 35);
-  sel.option(name1);
-  sel.option(name2);
-  sel.changed(changeArret);
-}
-
-function changeArret() {
-  arret = sel.value()
 }
 
 
@@ -305,7 +294,7 @@ function drawNameArret() {
   noStroke()
   textSize(25)
   fill(0, 0, 0)                 //Nom arret dans le cadre
-  text(arret, 680, 490)
+  text(name1, 680, 490)
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
@@ -334,6 +323,10 @@ function drawTitle() {
 //------------------------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------Fonctions natives P5.JS
 //------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
 
 
 function setup() {
@@ -366,6 +359,7 @@ function setup() {
 
   //appel du button
   buttonPokemon()
+
 }
 
 function draw() {             //Execution 60 fois par seconde
