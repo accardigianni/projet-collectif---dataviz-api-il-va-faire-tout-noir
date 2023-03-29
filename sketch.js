@@ -84,7 +84,6 @@ function drawDigitalClock() {
 
 function drawClock() {
   //Draw the clock background
-  noStroke();
   image(imgAdaHorloge, cx - 91, cy - 97, 174, 193);
   image(imgClock, cx - 91, cy - 87, imgClock.width / 2, imgClock.height / 2);
 
@@ -114,7 +113,7 @@ function closure() {
     text("Cloture dans " +
       (deltaClosure.getHours() - 1) + "h" +
       (deltaClosure.getMinutes()) + "m" +
-      (deltaClosure.getSeconds()) + "s", 70, 75);
+      (deltaClosure.getSeconds()) + "s", 40, 75);
   }
 }
 
@@ -129,7 +128,7 @@ function launch() {
       text("Lancement dans " +
         (deltaLaunch.getHours()) + "h" +
         (deltaLaunch.getMinutes()) + "m" +
-        (deltaLaunch.getSeconds()) + "s", 70, 75);
+        (deltaLaunch.getSeconds()) + "s", 40, 75);
     }
   }
 }
@@ -143,7 +142,7 @@ function buttonPokemon() {
   let button;
   imagePokemondraw = "";
   button = createButton('get your animal totem');
-  button.position(100, 150);
+  button.position(30, 180);
   button.mouseClicked(changePokemon);       //Action avec appel de fonction au click
 }
 
@@ -315,11 +314,11 @@ function drawNameArret() {
 //Titre de la page
 
 function drawTitle() {
-  fill(231, 75, 52);
+  fill(255, 0, 0);
   textSize(40);
   textFont('Helvetica');      //Police d'écriture
   noStroke();
-  text("Ada Tech School", 70, 45);
+  text("Ada Tech School", 40, 55);
   textSize(20);
   fill(220, 10, 50);
   strokeWeight(1);
@@ -328,8 +327,17 @@ function drawTitle() {
   if (deltaClosure.getHours() == 0 || deltaClosure.getHours() > 8) {
     textSize(30);
     fill(231, 75, 52);
-    text("Time to get away !", 70, 110);
+    text("Time to get away !", 40, 110);
   }
+}
+
+function header() {
+  strokeWeight(7)
+  stroke(0)
+  fill(0)
+  ellipse(1382, 150, 183, 183)
+  fill(238, 199, 202)
+  rect(3, 3, 1500, 125)
 }
 
 
@@ -353,7 +361,7 @@ function setup() {
   cx = width - 150;
   cy = 150;
   //Heure digitale
-  dx = width - 230;
+  dx = width - 235;
   dy = 300;
 
   //Création images
@@ -369,7 +377,8 @@ function setup() {
 }
 
 function draw() {             //Execution 60 fois par seconde
-  background(221, 249, 189);
+  background(255);
+  header()
   drawClock();
   drawDigitalClock();
   drawCloseArret();
