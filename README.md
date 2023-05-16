@@ -1,11 +1,14 @@
-Il va faire tout noir - Elsa - Florian - Gianni
 
-Projet 2 - Ada Tech School
-Dataviz & API
+# Projet de visualisation de données 
 
-lien : https://www.notion.so/Dataviz-API-82a1df4460fc44e0bd363538ab3410a4
+Utilisation de l'API de la société TAN afin de visualiser l'arrivée des différents tramways.
 
-Objectif : créer un site de visualisation de datas en dynamique
+Cette page à pour but de permettre aux étudiants d'ADA tech school de voir les différents impératifs des journées et de procrastiner les 5 minutes précédents l'arrivées d'un transport.
+
+Notions abordées:
+
+Javascript, Fichier JSON, API publique, Librairie P5.JS
+
 
 
 
