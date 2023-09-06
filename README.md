@@ -11,6 +11,4 @@ Notions abordées:
 
 Javascript, Fichier JSON, API publique, Librairie P5.JS
 
-
-
-
+![Capture d'écran 2023-09-06 132736](https://github.com/accardigianni/projet-collectif---dataviz-api-il-va-faire-tout-noir/assets/123973260/fcc40c13-fbac-4012-896f-2181bd473063)
